@@ -39,8 +39,8 @@ In your controller
 $assets = array();
 
 // Default assets from public assets folder
-$assets[] = 'assets::css/bootstrap.css';
-$assets[] = 'assets::js/jquery.js';
+$assets[] = 'assets::css/bootstrap.min.css';
+$assets[] = 'assets::js/jquery.min.js';
 
 // Non public assets from your bundle
 $assets[] = 'Index/css/index.css';
@@ -73,8 +73,5 @@ Output cached and minified JavaScript content:
 
 ```php
 <!-- JavaScript -->
-<script type="text/javascript" src="assets/js/jquery.min.js"></script>
-<script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="assets/js/ie10-viewport-bug-workaround.js"></script>
 <?= $this->assetJs($assets, ['inline' => false]); ?>
 ```
