@@ -19,7 +19,7 @@ $view->addFolder('assets', '/public/assets');
 // Asset extention options
 $options = array(
 	// View base path
-	'cachepath' => $this->get('path.view_cache'),
+	'cachepath' => '/path/to/public/cache',
 	// Create different hash for each language
 	'cachekey' => 'en_US',
 	// Base Url for public cache directory
