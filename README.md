@@ -13,8 +13,11 @@ composer install odan/plates-asset-cache
 ```php
 $view = new \League\Plates\Engine('/path/with/html/templates', null);
 
-// Add folder shortcut (assets::file.js)
+// Optional: Add folder shortcut (assets::file.js)
 $view->addFolder('assets', '/public/assets');
+
+// Optional: Set base url
+$view->addData(['baseurl' => 'http://localhost']);
 
 // Asset extention options
 $options = array(
@@ -64,9 +67,9 @@ Output  cached and minified CSS content:
         <meta charset="utf-8">
         <base href="<?= $baseurl; ?>" />
         <title>Demo</title>
-        <link type="text/css" href="assets/css/bootstrap.min.css" rel="stylesheet" />
         <?= $this->assetCss($assets, ['inline' => false]); ?>
     </head>
+...
 ```
 
 Output cached and minified JavaScript content:
