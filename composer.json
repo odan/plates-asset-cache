@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Odan\\Plates\\Extension": "src",
+            "Odan\\Plates\\Extension\\": "src",
             "Odan\\Plates\\Test\\": "tests"
         }
     }
