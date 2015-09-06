@@ -29,7 +29,7 @@ $options = array(
 );
 
 // Register Asset extension
-$view->loadExtension(new \Molengo\Plates\Extension\AssetCacheExtension($options));
+$view->loadExtension(new \Odan\Plates\Extension\AssetCache($options));
 ```
 # Usage
 
