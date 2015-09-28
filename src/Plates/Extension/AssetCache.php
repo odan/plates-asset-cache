@@ -6,11 +6,14 @@
  * @copyright 2016 odan https://github.com/odan
  * @license http://opensource.org/licenses/MIT The MIT License (MIT)
  */
+
 namespace Odan\Plates\Extension;
 
-use \League\Plates\Engine;
-use \League\Plates\Extension\ExtensionInterface;
-use \LogicException;
+use Exception;
+use League\Plates\Engine;
+use League\Plates\Extension\ExtensionInterface;
+use JsMin\Minify;
+use CSSmin;
 
 /**
  * Extension that adds the ability to cache and minify assets.
@@ -20,7 +23,7 @@ class AssetCache implements ExtensionInterface
 
     /**
      * Instance of the engine.
-     * @var \League\Plates\Engine
+     * @var Engine
      */
     protected $engine;
 
@@ -66,7 +69,7 @@ class AssetCache implements ExtensionInterface
     public function __construct($options)
     {
         if (empty($options['cachepath'])) {
-            throw new \Exception('Cache path is not defined');
+            throw new Exception('Cache path is not defined');
         }
         $this->cachePath = rtrim($options['cachepath'], '/');
         if (isset($options['cachekey'])) {
@@ -217,7 +220,7 @@ class AssetCache implements ExtensionInterface
      *
      * @param string $filename
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getFileContent($filename)
     {
@@ -360,9 +363,9 @@ class AssetCache implements ExtensionInterface
         $result = $this->compileFile($filename);
 
         if ($extension == 'js') {
-            $result = \JsMin\Minify::minify($result);
+            $result = Minify::minify($result);
         } else if ($extension == 'css') {
-            $compressor = new \CSSmin();
+            $compressor = new CSSmin();
             $result = $compressor->run($result);
         }
         return $result;
@@ -378,11 +381,6 @@ class AssetCache implements ExtensionInterface
     {
         $template = $this->engine->make($filename);
         $result = $template->path();
-
-        return $result;
-        $directory = $this->engine->getDirectory();
-        $result = $directory . '/' . $filename;
-        $result = str_replace("\\", '/', $result);
         return $result;
     }
 
