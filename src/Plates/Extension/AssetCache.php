@@ -166,14 +166,30 @@ class AssetCache implements ExtensionInterface
      */
     protected function getSectionCodeByFile($params)
     {
-        if ($params['inline']) {
-            $code = $this->getFileContent($params['filename']);
-            $code = $params['inline_open'] . $code . $params['inline_close'];
-        } else {
-            $code = $this->getFileUrl($params['filename']);
+        if ($this->isUrl($params['filename'])) {
+            $code = $params['filename'];
             $code = $params['outline_open'] . $code . $params['outline_close'];
+        } else {
+            if ($params['inline']) {
+                $code = $this->getFileContent($params['filename']);
+                $code = $params['inline_open'] . $code . $params['inline_close'];
+            } else {
+                $code = $this->getFileUrl($params['filename']);
+                $code = $params['outline_open'] . $code . $params['outline_close'];
+            }
         }
         return $code;
+    }
+
+    /**
+     * Check if url is valid
+     * 
+     * @param string $url
+     * @return bool
+     */
+    protected function isUrl($url)
+    {
+        return (!filter_var($url, FILTER_VALIDATE_URL) === false);
     }
 
     /**
@@ -186,12 +202,12 @@ class AssetCache implements ExtensionInterface
     protected function renderSectionJs($fileName, $inline)
     {
         return $this->getSectionCodeByFile(array(
-                'filename' => $fileName,
-                'inline' => $inline,
-                'inline_open' => '<script type="text/javascript">',
-                'inline_close' => "</script>\n",
-                'outline_open' => '<script type="text/javascript" src="',
-                'outline_close' => '"></script>' . "\n"
+                    'filename' => $fileName,
+                    'inline' => $inline,
+                    'inline_open' => '<script type="text/javascript">',
+                    'inline_close' => "</script>\n",
+                    'outline_open' => '<script type="text/javascript" src="',
+                    'outline_close' => '"></script>' . "\n"
         ));
     }
 
@@ -433,4 +449,5 @@ class AssetCache implements ExtensionInterface
     {
         chmod($filename, 0775);
     }
+
 }
