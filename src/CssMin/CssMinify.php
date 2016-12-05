@@ -24,7 +24,6 @@ namespace Odan\CssMin;
 
 class CssMinify
 {
-
     const NL = '___YUICSSMIN_PRESERVED_NL___';
     const TOKEN = '___YUICSSMIN_PRESERVED_TOKEN_';
     const COMMENT = '___YUICSSMIN_PRESERVE_CANDIDATE_COMMENT_';
@@ -43,7 +42,7 @@ class CssMinify
      * @param bool|int $raise_php_limits
      * If true, PHP settings will be raised if needed
      */
-    public function __construct($raise_php_limits = TRUE)
+    public function __construct($raise_php_limits = true)
     {
         // Set suggested PHP limits
         $this->memory_limit = 128 * 1048576; // 128MB in bytes
@@ -60,7 +59,7 @@ class CssMinify
      * @param int|bool $linebreak_pos
      * @return string
      */
-    public function run($css = '', $linebreak_pos = FALSE)
+    public function run($css = '', $linebreak_pos = false)
     {
         if (empty($css)) {
             return '';
@@ -220,7 +219,6 @@ class CssMinify
     {
         // strings are safe, now wrestle the comments
         for ($i = 0, $max = count($this->comments); $i < $max; $i++) {
-
             $token = $this->comments[$i];
             $placeholder = '/' . self::COMMENT . $i . '___/';
 
@@ -397,7 +395,7 @@ class CssMinify
         // Some source control tools don't like it when files containing lines longer
         // than, say 8000 characters, are checked in. The linebreak option is used in
         // that case to split long lines after a specific column.
-        if ($linebreak_pos !== FALSE && (int) $linebreak_pos >= 0) {
+        if ($linebreak_pos !== false && (int) $linebreak_pos >= 0) {
             $linebreak_pos = (int) $linebreak_pos;
             $start_index = $i = 0;
             while ($i < strlen($css)) {
@@ -445,18 +443,18 @@ class CssMinify
             $start_index = $index + 4; // "url(".length()
             $end_index = $last_index - 1;
             $terminator = $m[1]; // ', " or empty (not quoted)
-            $found_terminator = FALSE;
+            $found_terminator = false;
 
             if (strlen($terminator) === 0) {
                 $terminator = ')';
             }
 
-            while ($found_terminator === FALSE && $end_index + 1 <= $max_index) {
+            while ($found_terminator === false && $end_index + 1 <= $max_index) {
                 $end_index = $this->index_of($css, $terminator, $end_index + 1);
 
                 // endIndex == 0 doesn't really apply here
                 if ($end_index > 0 && substr($css, $end_index - 1, 1) !== '\\') {
-                    $found_terminator = TRUE;
+                    $found_terminator = true;
                     if (')' != $terminator) {
                         $end_index = $this->index_of($css, ')', $end_index);
                     }
@@ -690,12 +688,15 @@ class CssMinify
     private function hue_to_rgb($v1, $v2, $vh)
     {
         $vh = $vh < 0 ? $vh + 1 : ($vh > 1 ? $vh - 1 : $vh);
-        if ($vh * 6 < 1)
+        if ($vh * 6 < 1) {
             return $v1 + ($v2 - $v1) * 6 * $vh;
-        if ($vh * 2 < 1)
+        }
+        if ($vh * 2 < 1) {
             return $v2;
-        if ($vh * 3 < 2)
+        }
+        if ($vh * 3 < 2) {
             return $v1 + ($v2 - $v1) * ((2 / 3) - $vh) * 6;
+        }
         return $v1;
     }
 
@@ -722,7 +723,7 @@ class CssMinify
     {
         $index = strpos($haystack, $needle, $offset);
 
-        return ($index !== FALSE) ? $index : -1;
+        return ($index !== false) ? $index : -1;
     }
 
     /**
@@ -735,9 +736,9 @@ class CssMinify
      * @param int|bool $end index (optional)
      * @return string
      */
-    private function str_slice($str, $start = 0, $end = FALSE)
+    private function str_slice($str, $start = 0, $end = false)
     {
-        if ($end !== FALSE && ($start < 0 || $end <= 0)) {
+        if ($end !== false && ($start < 0 || $end <= 0)) {
             $max = strlen($str);
 
             if ($start < 0) {
@@ -757,8 +758,8 @@ class CssMinify
             }
         }
 
-        $slice = ($end === FALSE) ? substr($str, $start) : substr($str, $start, $end - $start);
-        return ($slice === FALSE) ? '' : $slice;
+        $slice = ($end === false) ? substr($str, $start) : substr($str, $start, $end - $start);
+        return ($slice === false) ? '' : $slice;
     }
 
     /**
