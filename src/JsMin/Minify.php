@@ -15,7 +15,6 @@ use Odan\JsMin\Exception\UnterminatedRegExp;
  */
 class Minify
 {
-
     const ORD_LF = 10;
     const ORD_SPACE = 32;
     const ACTION_KEEP_A = 1;

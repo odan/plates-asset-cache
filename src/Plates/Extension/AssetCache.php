@@ -380,7 +380,7 @@ class AssetCache implements ExtensionInterface
 
         if ($extension == 'js') {
             $result = Minify::minify($result);
-        } else if ($extension == 'css') {
+        } elseif ($extension == 'css') {
             $compressor = new CssMinify();
             $result = $compressor->run($result);
         }
@@ -449,5 +449,4 @@ class AssetCache implements ExtensionInterface
     {
         chmod($filename, 0775);
     }
-
 }
