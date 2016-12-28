@@ -347,7 +347,7 @@ class AssetCache implements ExtensionInterface
         // Folder: cache/ab/filename.ext
         $path = implode('/', $dirs) . '/' . $file;
         // Create url
-        $cacheUrl = $this->baseUrl . '/' . $path . '?' . gu(basename($filename));
+        $cacheUrl = $this->baseUrl . '/' . $path . '?' . urlencode(basename($filename));
         return $cacheUrl;
     }
 
