@@ -12,8 +12,7 @@ namespace Odan\Plates\Extension;
 use Exception;
 use League\Plates\Engine;
 use League\Plates\Extension\ExtensionInterface;
-use Odan\CssMin\CssMinify;
-use Odan\JsMin\Minify;
+use MatthiasMullie\Minify;
 
 /**
  * Extension that adds the ability to cache and minify assets.
@@ -376,15 +375,16 @@ class AssetCache implements ExtensionInterface
     protected function compressFile($filename)
     {
         $extension = $this->fileExtension($filename);
-        $result = $this->compileFile($filename);
+        $content = $this->compileFile($filename);
 
         if ($extension == 'js') {
-            $result = Minify::minify($result);
+            $minifier = new Minify\JS($content);
+            $content = $minifier->minify();
         } elseif ($extension == 'css') {
-            $compressor = new CssMinify();
-            $result = $compressor->run($result);
+            $minifier = new Minify\CSS($content);
+            $content = $minifier->minify();
         }
-        return $result;
+        return $content;
     }
 
     /**
