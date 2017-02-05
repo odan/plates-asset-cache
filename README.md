@@ -13,15 +13,16 @@ composer install odan/plates-asset-cache
 ```php
 $view = new \League\Plates\Engine('/path/with/html/templates', null);
 
-// Optional: Add folder shortcut (assets::file.js)
-$view->addFolder('assets', '/public/assets');
+// Optional: Add folder alias
+$view->addFolder('js', '/public/js');
+$view->addFolder('css', '/public/css');
 
 // Asset extention options
 $options = array(
-	// View base path
-	'cachepath' => '/path/to/public/cache',
-	// Enable JavaScript and CSS compression
-	'minify' => true
+    // View base path
+    'cache_path' => '/path/to/public/cache',
+    // Enable JavaScript and CSS compression
+    'minify' => true
 );
 
 // Register Asset extension

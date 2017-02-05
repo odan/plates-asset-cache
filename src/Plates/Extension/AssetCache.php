@@ -53,13 +53,6 @@ class AssetCache implements ExtensionInterface
     protected $minify = false;
 
     /**
-     * Base url.
-     *
-     * @var string
-     */
-    protected $baseUrl = '';
-
-    /**
      * Create new instance.
      *
      * @param Engine $engine
@@ -67,20 +60,14 @@ class AssetCache implements ExtensionInterface
      */
     public function __construct($options)
     {
-        if (empty($options['cachepath'])) {
+        if (empty($options['cache_path'])) {
             throw new Exception('Cache path is not defined');
         }
-        $this->cachePath = rtrim($options['cachepath'], '/');
-        if (isset($options['cachekey'])) {
-            $this->cacheKey = $options['cachekey'];
-        }
+        $this->cachePath = rtrim($options['cache_path'], '/');
         if (isset($options['minify'])) {
             $this->minify = $options['minify'];
         }
-        if (isset($options['baseurl'])) {
-            $this->baseUrl = rtrim($options['baseurl'], '/');
-        }
-        $this->cacheKey .= $this->minify . $this->baseUrl;
+        $this->cacheKey = $this->minify;
     }
 
     /**
@@ -90,8 +77,8 @@ class AssetCache implements ExtensionInterface
     public function register(Engine $engine)
     {
         $this->engine = $engine;
-        $engine->registerFunction('assetJs', array($this, 'assetJs'));
-        $engine->registerFunction('assetCss', array($this, 'assetCss'));
+        $engine->registerFunction('js', array($this, 'js'));
+        $engine->registerFunction('css', array($this, 'css'));
     }
 
     /**
@@ -101,7 +88,7 @@ class AssetCache implements ExtensionInterface
      * @param array $options
      * @return string content
      */
-    public function assetJs($assets, $options)
+    public function js($assets, $options)
     {
         $options['extension'] = 'js';
         $options['glue'] = "\t";
@@ -116,7 +103,7 @@ class AssetCache implements ExtensionInterface
      * @param array $options
      * @return string content
      */
-    public function assetCss($assets, $options)
+    public function css($assets, $options)
     {
         $options['extension'] = 'css';
         $options['glue'] = "\t";
@@ -346,7 +333,7 @@ class AssetCache implements ExtensionInterface
         // Folder: cache/ab/filename.ext
         $path = implode('/', $dirs) . '/' . $file;
         // Create url
-        $cacheUrl = $this->baseUrl . '/' . $path . '?' . urlencode(basename($filename));
+        $cacheUrl = '/' . $path . '?' . urlencode(basename($filename));
         return $cacheUrl;
     }
 
