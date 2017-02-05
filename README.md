@@ -36,29 +36,9 @@ $view->loadExtension(new \Odan\Plates\Extension\AssetCache($options));
 ```
 # Usage
 
-In your controller
+## Template
 
-```php
-$assets = array();
-
-// Default assets from public assets folder
-$assets[] = 'assets::css/bootstrap.min.css';
-$assets[] = 'assets::js/jquery.min.js';
-
-// Non public assets from your bundle
-$assets[] = 'Index/css/index.css';
-$assets[] = 'Index/js/index.js';
-
-// Add assets
-$view->addData(['assets' => $assets]);
-
-// Render and output layout template
-echo $view->render('Index/html/layout.html.php');
-```
-
-# Layout template (layout.html.php)
-
-Output  cached and minified CSS content:
+Output cached and minified CSS content:
 
 ```php
 <!DOCTYPE html>
@@ -67,7 +47,7 @@ Output  cached and minified CSS content:
         <meta charset="utf-8">
         <base href="<?= $baseurl; ?>" />
         <title>Demo</title>
-        <?= $this->assetCss($assets, ['inline' => false]); ?>
+        <?= $this->assetCss(['default.css', 'print.css'], ['inline' => false]); ?>
     </head>
 ...
 ```
@@ -76,5 +56,5 @@ Output cached and minified JavaScript content:
 
 ```php
 <!-- JavaScript -->
-<?= $this->assetJs($assets, ['inline' => false]); ?>
+<?= $this->assetJs(['mylib.js', 'page.js'], ['inline' => false]); ?>
 ```
