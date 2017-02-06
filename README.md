@@ -11,21 +11,20 @@ composer install odan/plates-asset-cache
 # Configuration
 
 ```php
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+
 $view = new \League\Plates\Engine('/path/with/html/templates', null);
 
-// Optional: Add folder alias
-$view->addFolder('js', '/public/js');
-$view->addFolder('css', '/public/css');
-
-// Asset extention options
 $options = array(
-    // View base path
-    'cache_path' => '/path/to/public/cache',
     // Enable JavaScript and CSS compression
-    'minify' => true
+    'minify' => true,
+    // View base path
+    'public_dir' => '/path/to/public/cache',
+    // internal cache
+    'cache' => new FilesystemAdapter('assets-cache', 0, 'public/cache')),
 );
 
-// Register Asset extension
+// Register asset extension
 $view->loadExtension(new \Odan\Plates\Extension\AssetCache($options));
 ```
 # Usage
@@ -41,7 +40,7 @@ Output cached and minified CSS content:
         <meta charset="utf-8">
         <base href="<?= $baseurl; ?>" />
         <title>Demo</title>
-        <?= $this->css(['default.css', 'print.css'], ['inline' => false]); ?>
+        <?= $this->assets(['default.css', 'print.css'], ['inline' => true]); ?>
     </head>
 ...
 ```
@@ -50,5 +49,5 @@ Output cached and minified JavaScript content:
 
 ```php
 <!-- JavaScript -->
-<?= $this->js(['mylib.js', 'page.js'], ['inline' => false]); ?>
+<?= $this->assets(['mylib.js', 'page.js'], ['inline' => true]); ?>
 ```
