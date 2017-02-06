@@ -25,7 +25,7 @@ $options = array(
 );
 
 // Register asset extension
-$view->loadExtension(new \Odan\Plates\Extension\AssetCache($options));
+$view->loadExtension(new \Odan\Asset\PlatesAssetExtension($options));
 ```
 # Usage
 
