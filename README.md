@@ -18,10 +18,10 @@ $view = new \League\Plates\Engine('/path/with/html/templates', null);
 $options = array(
     // Enable JavaScript and CSS compression
     'minify' => true,
-    // View base path
-    'public_dir' => '/path/to/public/cache',
-    // internal cache
-    'cache' => new FilesystemAdapter('assets-cache', 0, 'public/cache')),
+    // public assets cache directory
+    'public_dir' => 'public/cache',
+    // internal cache adapter
+    'cache' => new FilesystemAdapter('assets-cache', 0, 'tmp/cache')),
 );
 
 // Register asset extension
