@@ -18,9 +18,9 @@ $view = new \League\Plates\Engine('/path/with/html/templates', null);
 $options = array(
     // Enable JavaScript and CSS compression
     'minify' => true,
-    // public assets cache directory
+    // Public assets cache directory
     'public_dir' => 'public/cache',
-    // internal cache adapter
+    // Internal cache adapter
     'cache' => new FilesystemAdapter('assets-cache', 0, 'tmp/cache')),
 );
 
