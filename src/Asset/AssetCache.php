@@ -13,7 +13,7 @@ class AssetCache
      * @param string $filename
      * @return string
      */
-    protected function createCacheBustedUrl($fileName, $content)
+    public function createCacheBustedUrl($fileName, $content)
     {
         // For url we need to cache it
         $cacheFile = $this->createPublicCacheFile($fileName, $content);
