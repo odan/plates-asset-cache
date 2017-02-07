@@ -9,10 +9,10 @@
 
 namespace Odan\Asset;
 
-use Exception;
-use MatthiasMullie\Minify;
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Odan\CssMin\CssMinify;
+use Odan\JsMin\JsMinify;
 
 /**
  * Extension that adds the ability to cache and minify assets.
@@ -31,7 +31,7 @@ class AssetEngine
      *
      * @var string Path
      */
-    protected $publicDir;
+    protected $publicCaache;
 
     /**
      * Enables minify.
@@ -58,12 +58,7 @@ class AssetEngine
         } else {
             $this->cache = new ArrayAdapter();
         }
-        if (!empty($options['public_dir'])) {
-            $this->publicDir = $options['public_dir'];
-        }
-        if (!file_exists($this->publicDir)) {
-            throw new Exception("Path {$this->publicDir} not found");
-        }
+        $this->publicCache = new AssetCache($options['public_dir']);
 
         unset($options['public_cache']);
         unset($options['cache']);
@@ -79,6 +74,7 @@ class AssetEngine
      */
     public function assets($assets, $options)
     {
+        $assets = $this->prepareAssets($assets);
         $params = array_replace_recursive($this->options, $options);
 
         $cacheKey = $this->getCacheKey($assets, $params);
@@ -89,11 +85,10 @@ class AssetEngine
 
         $jsFiles = [];
         $cssFiles = [];
-        foreach ((array) $assets as $name) {
-            $file = $this->getRealFilename($name);
-            $fileType = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+        foreach ((array) $assets as $file) {
+            $fileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             if ($fileType == "js") {
-                $jsFiles [] = $file;
+                $jsFiles[] = $file;
             }
             if ($fileType == "css") {
                 $cssFiles[] = $file;
@@ -106,6 +101,21 @@ class AssetEngine
         $cacheItem->set($result);
         $this->cache->save($cacheItem);
 
+        return $result;
+    }
+
+    /**
+     * Resolve real asset filenames.
+     *
+     * @param mixed $assets
+     * @return array
+     */
+    protected function prepareAssets($assets)
+    {
+        $result = array();
+        foreach ((array) $assets as $name) {
+            $result[] = $this->getRealFilename($name);
+        }
         return $result;
     }
 
@@ -135,9 +145,8 @@ class AssetEngine
             }
         }
         if (strlen($public) > 0) {
-            $publicCache = new AssetCache();
             $name = isset($options['name']) ? $options['name'] : 'file.js';
-            $url = $publicCache->createCacheBustedUrl($name, $public);
+            $url = $this->publicCache->createCacheBustedUrl($name, $public);
             $contents[] = sprintf('<script src="%s"></script>', $url);
         }
         $result = implode("\n", $contents);
@@ -154,11 +163,9 @@ class AssetEngine
      */
     protected function getJsContent($file, $minify)
     {
+        $content = file_get_contents($file);
         if ($minify) {
-            $minifier = new Minify\JS($file);
-            $content = $minifier->minify();
-        } else {
-            $content = file_get_contents($file);
+            $content = JsMinify::minify($content);
         }
         return $content;
     }
@@ -180,7 +187,7 @@ class AssetEngine
                 $contents[] = sprintf('<link rel="stylesheet" type="text/css" href="%s" media="all" />', $asset);
                 continue;
             }
-            $content = $this->getJsContent($asset, $options);
+            $content = $this->getCssContent($asset, $options);
 
             if (!empty($options['inline'])) {
                 $contents[] = sprintf("<style>%s</style>", $content);
@@ -189,9 +196,8 @@ class AssetEngine
             }
         }
         if (strlen($public) > 0) {
-            $publicCache = new AssetCache();
-            $name = isset($options['name']) ? $options['name'] : 'file.js';
-            $url = $publicCache->createCacheBustedUrl($name, $public);
+            $name = isset($options['name']) ? $options['name'] : 'file.css';
+            $url = $this->publicCache->createCacheBustedUrl($name, $public);
             $contents[] = sprintf('<link rel="stylesheet" type="text/css" href="%s" media="all" />', $url);
         }
         $result = implode("\n", $contents);
@@ -208,11 +214,10 @@ class AssetEngine
      */
     function getCssContent($fileName, $minify)
     {
+        $content = file_get_contents($fileName);
         if ($minify) {
-            $minifier = new Minify\CSS($fileName);
-            $content = $minifier->minify();
-        } else {
-            $content = file_get_contents($fileName);
+            $compressor = new CssMinify();
+            $content = $compressor->run($content);
         }
         return $content;
     }
@@ -255,4 +260,5 @@ class AssetEngine
     {
         return $filename;
     }
+
 }

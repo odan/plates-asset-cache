@@ -52,4 +52,5 @@ class PlatesAssetExtension extends AssetEngine implements ExtensionInterface
         $result = $template->path();
         return $result;
     }
+
 }
