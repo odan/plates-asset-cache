@@ -12,6 +12,8 @@
             <exclude>
                 <directory>vendor</directory>
                 <directory>build</directory>
+                <directory>src/CssMin</directory>
+                <directory>src/JsMin</directory>
             </exclude>
         </whitelist>
     </filter>
