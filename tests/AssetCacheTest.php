@@ -105,5 +105,4 @@ class AssetCacheTest extends \PHPUnit_Framework_TestCase
         $actual3 = $this->extension->assets($filename, ['inline' => false]);
         $this->assertRegExp($regex, $actual3);
     }
-
 }

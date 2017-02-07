@@ -255,5 +255,4 @@ class AssetEngine
     {
         return $filename;
     }
-
 }
