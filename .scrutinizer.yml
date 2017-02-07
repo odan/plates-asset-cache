@@ -3,7 +3,9 @@ filter:
         - "tests/"
         - "resources/"
         - "vendor/"
-
+        - "src/CssMin/"
+        - "src/JsMin/"
+        
 checks:
     php:
         remove_extra_empty_lines: true
