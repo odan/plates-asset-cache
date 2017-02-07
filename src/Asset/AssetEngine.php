@@ -233,7 +233,7 @@ class AssetEngine
     {
         $keys = [];
         foreach ((array) $assets as $file) {
-            $keys[] = sha1($file . filemtime($file));
+            $keys[] = sha1_file($file);
         }
         $keys[] = sha1(serialize($settings));
         return sha1(implode('', $keys));

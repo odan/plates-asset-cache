@@ -76,13 +76,7 @@ class AssetCacheTest extends TestCase
         $actual2 = $this->extension->assets($filename, ['inline' => true]);
         $this->assertSame('<script>alert(1);</script>', $actual2);
 
-        $filemtime = $file->filemtime();
-        clearstatcache();
-        sleep(2);
         $file->setContent('alert(2);');
-        $filemtime2 = $file->filemtime();
-        $this->assertNotSame($filemtime, $filemtime2);
-
         $actual3 = $this->extension->assets($filename, ['inline' => true]);
         $this->assertSame('<script>alert(2);</script>', $actual3);
     }
