@@ -2,6 +2,14 @@
 
 Caching and compression for Plates template assets (JavaScript and CSS).
 
+[![Latest Version](https://img.shields.io/github/release/odan/plates-asset-cache.svg)](https://github.com/loadsys/odan/plates-asset-cache/releases)
+[![Build Status](https://travis-ci.org/odan/plates-asset-cache.svg?branch=master)](https://travis-ci.org/odan/plates-asset-cache)
+[![Crutinizer](https://img.shields.io/scrutinizer/g/odan/plates-asset-cache.svg)](https://scrutinizer-ci.com/g/odan/plates-asset-cache)
+[![Coverage Status](https://scrutinizer-ci.com/g/odan/plates-asset-cache/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/odan/plates-asset-cache/code-structure)
+[![Total Downloads](https://img.shields.io/packagist/dt/odan/plates-asset-cache.svg)](https://packagist.org/packages/odan/plates-asset-cache)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
+
+
 # Installation
 
 ```
@@ -21,7 +29,7 @@ $options = array(
     // Public assets cache directory
     'public_dir' => 'public/cache',
     // Internal cache adapter
-    'cache' => new FilesystemAdapter('assets-cache', 0, 'tmp/cache')),
+    'cache' => new FilesystemAdapter('assets-cache', 0, 'tmp/cache')
 );
 
 // Register asset extension
