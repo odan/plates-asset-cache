@@ -48,6 +48,10 @@ class PlatesAssetExtension extends AssetEngine implements ExtensionInterface
         if (strpos($file, 'vfs://') !== false) {
             return $file;
         }
+        if ($file[0] === '/' || $file[1] === ':') {
+            // absolute path
+            return $file;
+        }
         $template = $this->engine->make($file);
         $result = $template->path();
         return $result;
