@@ -7,12 +7,13 @@ use League\Plates\Template\Template;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use org\bovigo\vfs\vfsStream;
 use Odan\Asset\PlatesAssetExtension;
+use PHPUnit\Framework\TestCase;
 
 /**
  * AssetCacheTest
  *
  */
-class AssetCacheTest extends \PHPUnit_Framework_TestCase
+class AssetCacheTest extends TestCase
 {
 
     protected $engine;
@@ -66,19 +67,35 @@ class AssetCacheTest extends \PHPUnit_Framework_TestCase
      */
     public function testJsInline()
     {
-        $file = vfsStream::newFile('test.js')->at($this->root)->setContent('alert(1);');
-        $filename = $file->url();
+        $filename = __DIR__ . '/test.js';
+        file_put_contents($filename, 'alert(1);');
+        #$file = vfsStream::newFile('test.js')->at($this->root)->setContent('alert(1);');
+        #$filename = $file->url();
+        echo $filename;
         $actual = $this->extension->assets($filename, ['inline' => true]);
-        $this->assertSame('<script>alert(1)</script>', $actual);
+        $this->assertSame('<script>alert(1);</script>', $actual);
 
         // get from cache
         $actual2 = $this->extension->assets($filename, ['inline' => true]);
-        $this->assertSame('<script>alert(1)</script>', $actual2);
-
+        $this->assertSame('<script>alert(1);</script>', $actual2);
+        //$filemtime = $file->filemtime();
+        $filemtime = filemtime($filename);
+        #clearstatcache();
+        //usleep(5000);
         // rebuild cache
+        sleep(1);
+        //$file->setContent('alert(2);');
         file_put_contents($filename, 'alert(2);');
+        touch($filename, 1);
+        //touch($filename);
+        $filemtime2 = filemtime($filename);
+        #$filemtime2 = $file->filemtime();
+
+        $this->assertNotSame($filemtime, $filemtime2);
+        //$content = file_get_contents($filename);
+        //echo $content;
         $actual3 = $this->extension->assets($filename, ['inline' => true]);
-        $this->assertSame('<script>alert(2)</script>', $actual3);
+        $this->assertSame('<script>alert(2);</script>', $actual3);
     }
 
     /**
