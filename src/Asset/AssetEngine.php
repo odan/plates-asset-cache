@@ -72,12 +72,12 @@ class AssetEngine
      * @param array $options
      * @return string content
      */
-    public function assets($assets, $options)
+    public function assets($assets, $options = array())
     {
         $assets = $this->prepareAssets($assets);
-        $params = array_replace_recursive($this->options, $options);
+        $options = array_replace_recursive($this->options, $options);
 
-        $cacheKey = $this->getCacheKey($assets, $params);
+        $cacheKey = $this->getCacheKey($assets, $options);
         $cacheItem = $this->cache->getItem($cacheKey);
         if ($cacheItem->isHit()) {
             return $cacheItem->get();
@@ -136,10 +136,10 @@ class AssetEngine
                 $contents[] = sprintf('<script src="%s"></script>', $asset);
                 continue;
             }
-            $content = $this->getJsContent($asset, $options);
+            $content = $this->getJsContent($asset, $options['minify']);
 
             if (!empty($options['inline'])) {
-                 $contents[] = sprintf("<script>%s</script>", $content);
+                $contents[] = sprintf("<script>%s</script>", $content);
             } else {
                 $public .= $content . "";
             }
@@ -187,7 +187,7 @@ class AssetEngine
                 $contents[] = sprintf('<link rel="stylesheet" type="text/css" href="%s" media="all" />', $asset);
                 continue;
             }
-            $content = $this->getCssContent($asset, $options);
+            $content = $this->getCssContent($asset, $options['minify']);
 
             if (!empty($options['inline'])) {
                 $contents[] = sprintf("<style>%s</style>", $content);
