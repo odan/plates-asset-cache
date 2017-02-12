@@ -50,7 +50,7 @@ class AssetCache
         // Folder: cache/ab/filename.ext
         $path = implode('/', $cacheDirs) . '/' . $name;
         // Create url
-        $cacheUrl = '/' . $path;
+        $cacheUrl = $path;
         return $cacheUrl;
     }
 

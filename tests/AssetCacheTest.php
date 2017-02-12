@@ -89,7 +89,7 @@ class AssetCacheTest extends TestCase
     public function testJsPublic()
     {
         // <script src="/cache/ab/file.96ce14164e1f92eb0ec93044a005be906f56d4.js"></script>
-        $regex = '/^\<script src=\"\/cache\/[a-zA-Z0-9]{2,2}\/file\.[a-zA-Z0-9]{36}/';
+        $regex = '/^\<script src=\"cache\/[a-zA-Z0-9]{2,2}\/file\.[a-zA-Z0-9]{36}/';
 
         $file = vfsStream::newFile('public.js')->at($this->root)->setContent('alert(3);');
         $filename = $file->url();
