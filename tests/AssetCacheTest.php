@@ -15,7 +15,6 @@ use PHPUnit\Framework\TestCase;
  */
 class AssetCacheTest extends TestCase
 {
-
     protected $engine;
 
     protected $template;
@@ -55,7 +54,6 @@ class AssetCacheTest extends TestCase
      */
     public function testInstance()
     {
-
         $extension = $this->newExtensionInstance();
         $this->assertInstanceOf(PlatesAssetExtension::class, $extension);
     }

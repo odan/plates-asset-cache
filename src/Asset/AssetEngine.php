@@ -212,7 +212,7 @@ class AssetEngine
 
      * @return string CSS code
      */
-    function getCssContent($fileName, $minify)
+    public function getCssContent($fileName, $minify)
     {
         $content = file_get_contents($fileName);
         if ($minify) {
@@ -260,5 +260,4 @@ class AssetEngine
     {
         return $filename;
     }
-
 }

@@ -10,6 +10,7 @@
 namespace Odan\Asset;
 
 use League\Plates\Engine;
+use League\Plates\Template\Name;
 use League\Plates\Extension\ExtensionInterface;
 use Odan\Asset\AssetEngine;
 
@@ -18,13 +19,14 @@ use Odan\Asset\AssetEngine;
  */
 class PlatesAssetExtension extends AssetEngine implements ExtensionInterface
 {
-
     /**
      * Instance of the engine.
      *
      * @var Engine
      */
     protected $engine;
+
+    protected $nameEngine;
 
     /**
      * Register extension function.
@@ -52,9 +54,12 @@ class PlatesAssetExtension extends AssetEngine implements ExtensionInterface
             // absolute path
             return $file;
         }
-        $template = $this->engine->make($file);
-        $result = $template->path();
+        if (!$this->nameEngine) {
+            $this->nameEngine = clone $this->engine;
+            $this->nameEngine->setFileExtension(null);
+        }
+        $name = new Name($this->nameEngine, $file);
+        $result = $name->getPath();
         return $result;
     }
-
 }

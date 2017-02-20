@@ -80,5 +80,4 @@ class AssetCache
         chmod($cacheFile, 0775);
         return $cacheFile;
     }
-
 }
