@@ -26,7 +26,7 @@ class AssetCacheTest extends TestCase
     public function setUp()
     {
         vfsStream::setup('templates');
-        $this->engine = new Engine(vfsStream::url('templates'), null);
+        $this->engine = new Engine(vfsStream::url('templates'));
         $this->extension = $this->newExtensionInstance();
         $this->extension->register($this->engine);
         $this->template = new Template($this->engine, 'template');
