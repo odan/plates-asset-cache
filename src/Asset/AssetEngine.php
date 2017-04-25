@@ -146,6 +146,9 @@ class AssetEngine
         }
         if (strlen($public) > 0) {
             $name = isset($options['name']) ? $options['name'] : 'file.js';
+            if(empty(pathinfo($name, PATHINFO_EXTENSION))) {
+                $name .= '.js';
+            }
             $url = $this->publicCache->createCacheBustedUrl($name, $public);
             $contents[] = sprintf('<script src="%s"></script>', $url);
         }
@@ -197,6 +200,9 @@ class AssetEngine
         }
         if (strlen($public) > 0) {
             $name = isset($options['name']) ? $options['name'] : 'file.css';
+            if(empty(pathinfo($name, PATHINFO_EXTENSION))) {
+                $name .= '.css';
+            }
             $url = $this->publicCache->createCacheBustedUrl($name, $public);
             $contents[] = sprintf('<link rel="stylesheet" type="text/css" href="%s" media="all" />', $url);
         }
