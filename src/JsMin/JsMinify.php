@@ -147,8 +147,9 @@ class JsMinify
                         }
                         if (ord($this->a) <= self::ORD_LF) {
                             throw new UnterminatedString(
-                            "JSMin: Unterminated String at byte "
-                            . $this->inputIndex . ": {$str}");
+                                "JSMin: Unterminated String at byte "
+                                . $this->inputIndex . ": {$str}"
+                            );
                         }
                         $str .= $this->a;
                         if ($this->a === '\\') {
@@ -177,8 +178,9 @@ class JsMinify
                             $pattern .= $this->a;
                         } elseif (ord($this->a) <= self::ORD_LF) {
                             throw new UnterminatedRegExp(
-                            "JSMin: Unterminated RegExp at byte "
-                            . $this->inputIndex . ": {$pattern}");
+                                "JSMin: Unterminated RegExp at byte "
+                                . $this->inputIndex . ": {$pattern}"
+                            );
                         }
                         $this->output .= $this->a;
                         $this->lastByteOut = $this->a;
@@ -310,8 +312,9 @@ class JsMinify
                 }
             } elseif ($get === null) {
                 throw new UnterminatedComment(
-                "JSMin: Unterminated comment at byte "
-                . $this->inputIndex . ": /*{$comment}");
+                    "JSMin: Unterminated comment at byte "
+                    . $this->inputIndex . ": /*{$comment}"
+                );
             }
             $comment .= $get;
         }
