@@ -64,7 +64,7 @@ class AssetCache
     {
         $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         if (empty($extension)) {
-            $extension = '.cache';
+            $extension = 'cache';
         }
         $name = pathinfo($fileName, PATHINFO_FILENAME);
         $checksum = sha1($fileName . $content);
