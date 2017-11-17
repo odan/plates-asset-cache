@@ -13,7 +13,7 @@ Caching and compression for Plates template assets (JavaScript and CSS).
 # Installation
 
 ```
-composer install odan/plates-asset-cache
+composer require odan/plates-asset-cache
 ```
 
 # Configuration
@@ -48,6 +48,8 @@ Output cached and minified CSS content:
         <meta charset="utf-8">
         <base href="<?= $baseurl; ?>" />
         <title>Demo</title>
+        // The root path is the path defined at the instantiation (/path/with/html/templates)
+        // The inline value defines, if the file should be returned as inline CSS or as <link> tag to the cache file
         <?= $this->assets(['default.css', 'print.css'], ['inline' => true]); ?>
     </head>
 ...
@@ -57,5 +59,7 @@ Output cached and minified JavaScript content:
 
 ```php
 <!-- JavaScript -->
+// The root path is the path defined at the instantiation (/path/with/html/templates)
+// The inline value defines, if the file should be returned as inline JS or as  <script> tag to the cache file
 <?= $this->assets(['mylib.js', 'page.js'], ['inline' => true]); ?>
 ```
