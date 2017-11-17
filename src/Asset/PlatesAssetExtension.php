@@ -31,6 +31,7 @@ class PlatesAssetExtension extends AssetEngine implements ExtensionInterface
     /**
      * Register extension function.
      *
+     * @param Engine $engine Engine instance
      * @return null
      */
     public function register(Engine $engine)
