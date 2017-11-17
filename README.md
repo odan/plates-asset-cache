@@ -10,13 +10,13 @@ Caching and compression for Plates template assets (JavaScript and CSS).
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 
 
-# Installation
+## Installation
 
 ```
 composer require odan/plates-asset-cache
 ```
 
-# Configuration
+## Configuration
 
 ```php
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -35,9 +35,9 @@ $options = array(
 // Register asset extension
 $view->loadExtension(new \Odan\Asset\PlatesAssetExtension($options));
 ```
-# Usage
+## Usage
 
-## Template
+### Template
 
 Output cached and minified CSS content:
 
