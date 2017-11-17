@@ -27,7 +27,7 @@ $options = array(
     // Enable JavaScript and CSS compression
     'minify' => true,
     // Public assets cache directory
-    'public_dir' => 'public/cache',
+    'public_dir' => 'public/assets',
     // Internal cache adapter
     'cache' => new FilesystemAdapter('assets-cache', 0, 'tmp/cache')
 );
