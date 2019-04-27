@@ -3,6 +3,7 @@
 namespace Odan\Asset;
 
 use Exception;
+use RuntimeException;
 
 /**
  * Asset Cache for public JS ans CSS files
@@ -19,8 +20,9 @@ class AssetCache
     /**
      * Create new instance.
      *
-     * @param Engine $engine
-     * @param array $options
+     * @param string $publicDir
+     *
+     * @throws Exception
      */
     public function __construct($publicDir)
     {
@@ -28,14 +30,16 @@ class AssetCache
             $this->publicDir = $publicDir;
         }
         if (!file_exists($this->publicDir)) {
-            throw new Exception("Path {$this->publicDir} not found");
+            throw new RuntimeException("Path {$this->publicDir} not found");
         }
     }
 
     /**
      * Returns url for filename
      *
-     * @param string $filename
+     * @param $fileName
+     * @param $content
+     *
      * @return string
      */
     public function createCacheBustedUrl($fileName, $content)
@@ -58,6 +62,8 @@ class AssetCache
      * Create cache file from fileName
      *
      * @param string $fileName
+     * @param $content
+     *
      * @return string cacheFile
      */
     protected function createPublicCacheFile($fileName, $content)

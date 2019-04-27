@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Asset Engine.
- *
- * @copyright 2017 odan https://github.com/odan
- * @license http://opensource.org/licenses/MIT The MIT License (MIT)
- */
-
 namespace Odan\Asset;
 
 use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Odan\CssMin\CssMinify;
-use Odan\JsMin\JsMinify;
+use tubalmartin\CssMin\Minifier as CssMinifier;
+use JSMin\JSMin;
 
 /**
  * Extension that adds the ability to cache and minify assets.
@@ -48,7 +41,6 @@ class AssetEngine
     /**
      * Create new instance.
      *
-     * @param Engine $engine
      * @param array $options
      */
     public function __construct($options)
@@ -70,6 +62,7 @@ class AssetEngine
      *
      * @param array $assets
      * @param array $options
+     *
      * @return string content
      */
     public function assets($assets, $options = array())
@@ -85,7 +78,7 @@ class AssetEngine
 
         $jsFiles = [];
         $cssFiles = [];
-        foreach ((array) $assets as $file) {
+        foreach ((array)$assets as $file) {
             $fileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             if ($fileType == "js") {
                 $jsFiles[] = $file;
@@ -113,7 +106,7 @@ class AssetEngine
     protected function prepareAssets($assets)
     {
         $result = array();
-        foreach ((array) $assets as $name) {
+        foreach ((array)$assets as $name) {
             $result[] = $this->getRealFilename($name);
         }
         return $result;
@@ -124,6 +117,7 @@ class AssetEngine
      *
      * @param array $assets
      * @param array $options
+     *
      * @return string content
      */
     public function js($assets, $options)
@@ -160,7 +154,7 @@ class AssetEngine
      * Minimise JS.
      *
      * @param string $file Name of default JS file
-     * @param bool $minify  Minify js if true
+     * @param bool $minify Minify js if true
      *
      * @return string JavaScript code
      */
@@ -168,7 +162,7 @@ class AssetEngine
     {
         $content = file_get_contents($file);
         if ($minify) {
-            $content = JsMinify::minify($content);
+            $content = JsMin::minify($content);
         }
         return $content;
     }
@@ -178,6 +172,7 @@ class AssetEngine
      *
      * @param array $assets
      * @param array $options
+     *
      * @return string content
      */
     public function css($assets, $options)
@@ -214,15 +209,15 @@ class AssetEngine
      * Minimize CSS.
      *
      * @param string $fileName Name of default CSS file
-     * @param bool   $minify   Minify css if true
-
+     * @param bool $minify Minify css if true
+     *
      * @return string CSS code
      */
     public function getCssContent($fileName, $minify)
     {
         $content = file_get_contents($fileName);
         if ($minify) {
-            $compressor = new CssMinify();
+            $compressor = new CssMinifier();
             $content = $compressor->run($content);
         }
         return $content;
@@ -233,12 +228,13 @@ class AssetEngine
      *
      * @param mixed $assets
      * @param mixed $settings
+     *
      * @return string
      */
     protected function getCacheKey($assets, $settings = null)
     {
         $keys = [];
-        foreach ((array) $assets as $file) {
+        foreach ((array)$assets as $file) {
             $keys[] = sha1_file($file);
         }
         $keys[] = sha1(serialize($settings));

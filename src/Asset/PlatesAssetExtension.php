@@ -1,18 +1,10 @@
 <?php
 
-/**
- * Plates Asset Extension
- *
- * @copyright 2017 odan https://github.com/odan
- * @license http://opensource.org/licenses/MIT The MIT License (MIT)
- */
-
 namespace Odan\Asset;
 
 use League\Plates\Engine;
 use League\Plates\Template\Name;
 use League\Plates\Extension\ExtensionInterface;
-use Odan\Asset\AssetEngine;
 
 /**
  * Extension that adds the ability to cache and minify assets.
