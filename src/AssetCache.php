@@ -6,16 +6,16 @@ use Exception;
 use RuntimeException;
 
 /**
- * Asset Cache for public JS ans CSS files
+ * Asset Cache for public JS ans CSS files.
  */
-class AssetCache
+final class AssetCache
 {
     /**
-     * Cache
+     * Cache.
      *
      * @var string Path
      */
-    protected $publicDir;
+    private $publicDir;
 
     /**
      * Create new instance.
@@ -24,7 +24,7 @@ class AssetCache
      *
      * @throws Exception
      */
-    public function __construct($publicDir)
+    public function __construct(string $publicDir = null)
     {
         if (isset($publicDir)) {
             $this->publicDir = $publicDir;
@@ -35,43 +35,48 @@ class AssetCache
     }
 
     /**
-     * Returns url for filename
+     * Returns url for filename.
      *
-     * @param $fileName
-     * @param $content
+     * @param string $fileName
+     * @param string $content
      *
      * @return string
      */
-    public function createCacheBustedUrl($fileName, $content)
+    public function createCacheBustedUrl(string $fileName, string $content): string
     {
         // For url we need to cache it
         $cacheFile = $this->createPublicCacheFile($fileName, $content);
         $name = pathinfo($cacheFile, PATHINFO_BASENAME);
         $dir = pathinfo($cacheFile, PATHINFO_DIRNAME);
         $dirs = explode('/', $dir);
+
         // Folder: cache/ab
         $cacheDirs = array_slice($dirs, count($dirs) - 2);
+
         // Folder: cache/ab/filename.ext
         $path = implode('/', $cacheDirs) . '/' . $name;
+
         // Create url
         $cacheUrl = $path;
+
         return $cacheUrl;
     }
 
     /**
-     * Create cache file from fileName
+     * Create cache file from fileName.
      *
      * @param string $fileName
-     * @param $content
+     * @param string $content
      *
      * @return string cacheFile
      */
-    protected function createPublicCacheFile($fileName, $content)
+    protected function createPublicCacheFile(string $fileName, string $content): string
     {
         $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         if (empty($extension)) {
             $extension = 'cache';
         }
+
         $name = pathinfo($fileName, PATHINFO_FILENAME);
         $checksum = sha1($fileName . $content);
         $checksumDir = $this->publicDir . '/' . substr($checksum, 0, 2);
@@ -84,6 +89,7 @@ class AssetCache
 
         file_put_contents($cacheFile, $content);
         chmod($cacheFile, 0775);
+
         return $cacheFile;
     }
 }

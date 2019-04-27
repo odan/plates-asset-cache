@@ -4,23 +4,36 @@ namespace Odan\Test;
 
 use League\Plates\Engine;
 use League\Plates\Template\Template;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use org\bovigo\vfs\vfsStream;
+use Odan\Asset\AssetEngine;
 use Odan\Asset\PlatesAssetExtension;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
- * AssetCacheTest
- *
+ * AssetCacheTest.
  */
 class AssetCacheTest extends TestCase
 {
+    /**
+     * @var Engine
+     */
     protected $engine;
 
+    /**
+     * @var Template
+     */
     protected $template;
 
+    /**
+     * @var PlatesAssetExtension
+     */
     protected $extension;
 
+    /**
+     * @var vfsStreamDirectory
+     */
     protected $root;
 
     public function setUp()
@@ -41,10 +54,13 @@ class AssetCacheTest extends TestCase
         $options = [
             'cache' => new FilesystemAdapter(sha1(__DIR__), 0, vfsStream::url('root/tmp/asset-cache')),
             'public_dir' => vfsStream::url('root/public/cache'),
-            'minify' => true
+            'minify' => true,
         ];
-        $asset = new \Odan\Asset\PlatesAssetExtension($options);
-        return $asset;
+
+        $engine = new AssetEngine($options);
+        $extension = new PlatesAssetExtension($engine);
+
+        return $extension;
     }
 
     /**
