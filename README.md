@@ -6,7 +6,7 @@ Caching and compression for Plates template assets (JavaScript and CSS).
 [![Build Status](https://travis-ci.org/odan/plates-asset-cache.svg?branch=master)](https://travis-ci.org/odan/plates-asset-cache)
 [![Crutinizer](https://img.shields.io/scrutinizer/g/odan/plates-asset-cache.svg)](https://scrutinizer-ci.com/g/odan/plates-asset-cache)
 [![Code Coverage](https://scrutinizer-ci.com/g/odan/plates-asset-cache/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/odan/plates-asset-cache/code-structure)
-[![Total Downloads](https://img.shields.io/packagist/dt/odan/plates-asset-cache.svg)](https://packagist.org/packages/odan/plates-asset-cache)
+[![Total Downloads](https://img.shields.io/packagist/dt/odan/plates-asset-cache.svg)](https://packagist.org/packages/odan/plates-asset-cache/stats)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 
 
@@ -19,9 +19,10 @@ composer require odan/plates-asset-cache
 ## Configuration
 
 ```php
+use League\Plates\Engine;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-$view = new \League\Plates\Engine('/path/with/html/templates', null);
+$view = new Engine('/path/with/html/templates', null);
 
 $options = array(
     // Enable JavaScript and CSS compression
