@@ -28,6 +28,7 @@ before_script:
   - cd $TRAVIS_BUILD_DIR
 
 script:
+  - composer list
   - composer phpstan
   - composer test-coverage
 
