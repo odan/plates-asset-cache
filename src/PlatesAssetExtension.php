@@ -19,11 +19,6 @@ final class PlatesAssetExtension implements ExtensionInterface
     private $engine;
 
     /**
-     * @var Name
-     */
-    private $nameEngine;
-
-    /**
      * @var AssetEngine
      */
     private $assetEngine;
