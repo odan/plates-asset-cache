@@ -4,7 +4,6 @@ namespace Odan\Asset;
 
 use League\Plates\Engine;
 use League\Plates\Extension\ExtensionInterface;
-use League\Plates\Template\Name;
 
 /**
  * Extension that adds the ability to cache and minify assets.
