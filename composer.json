@@ -35,8 +35,8 @@
         "test-coverage": "php vendor/phpunit/phpunit/phpunit --coverage-clover build/logs/clover.xml --coverage-html build/coverage",
         "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests",
         "fix-style": "phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit -n src tests",
-        "phpstan-win": "php vendor/phpstan/phpstan-shim/phpstan analyse src tests --level=max -c phpstan.neon --no-progress",
-        "phpstan": "php vendor/bin/phpstan.phar analyse src tests --level=max -c phpstan.neon --no-progress"
+        "phpstan": "php vendor/bin/phpstan.phar analyse src tests --level=max -c phpstan.neon --no-progress",
+        "phpstan-win": "php vendor/phpstan/phpstan-shim/phpstan analyse src tests --level=max -c phpstan.neon --no-progress"
     },
     "autoload": {
         "psr-4": {
