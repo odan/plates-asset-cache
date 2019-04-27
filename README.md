@@ -16,10 +16,16 @@ Caching and compression for Plates template assets (JavaScript and CSS).
 composer require odan/plates-asset-cache
 ```
 
+## Requirements
+
+* PHP 7.0+
+
 ## Configuration
 
 ```php
 use League\Plates\Engine;
+use Odan\Asset\AssetEngine;
+use Odan\Asset\PlatesAssetExtension;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 $view = new Engine('/path/with/html/templates', null);
@@ -34,7 +40,7 @@ $options = array(
 );
 
 // Register asset extension
-$view->loadExtension(new \Odan\Asset\PlatesAssetExtension($options));
+$view->loadExtension(new PlatesAssetExtension(new AssetEngine($options)));
 ```
 ## Usage
 

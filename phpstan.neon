@@ -1,3 +1,4 @@
 parameters:
-    excludes_analyse:
-        - *.html.php
+	reportUnmatchedIgnoredErrors: false
+	ignoreErrors:
+		- '#Parameter \#2 \$callback of method League\\Plates\\Engine::registerFunction#'

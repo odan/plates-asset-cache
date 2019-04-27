@@ -91,7 +91,7 @@ final class AssetEngine
 
         $jsFiles = [];
         $cssFiles = [];
-        foreach ((array)$assets as $file) {
+        foreach ($assets as $file) {
             $fileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             if ($fileType == 'js') {
                 $jsFiles[] = $file;
