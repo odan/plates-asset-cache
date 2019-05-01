@@ -257,7 +257,7 @@ final class AssetEngine
      *
      * @return string
      */
-    protected function getCacheKey(array $assets, ?array $settings = null): string
+    protected function getCacheKey(array $assets, array $settings = null): string
     {
         $keys = [];
         foreach ($assets as $file) {
