@@ -25,19 +25,22 @@
         "mrclay/jsmin-php": "^2.4"
     },
     "require-dev": {
+        "doctrine/coding-standard": "^6.0",
         "phpunit/phpunit": "^7.0|^6.0",
         "league/plates": "3.*",
         "mikey179/vfsstream": "^1.6",
         "phpstan/phpstan-shim": "^0.11|^0.10|^0.9"
     },
     "scripts": {
-        "test": "php vendor/phpunit/phpunit/phpunit",
-        "test-coverage": "php vendor/phpunit/phpunit/phpunit --coverage-clover build/logs/clover.xml --coverage-html build/coverage",
-        "install-cs-fixer": "php -r \"@mkdir('build'); copy('https://cs.symfony.com/download/php-cs-fixer-v2.phar', 'build/php-cs-fixer-v2.phar');\"",
-        "fix-style": "php build/php-cs-fixer-v2.phar fix --config=.cs.php",
-        "check-style": "php build/php-cs-fixer-v2.phar fix --dry-run --format=txt --verbose --diff --diff-format=udiff --config=.cs.php",
+        "test": "phpunit --configuration phpunit.xml",
+        "test-coverage": "phpunit --configuration phpunit.xml --coverage-clover build/logs/clover.xml --coverage-html build/coverage",
+        "check-style": "phpcs --standard=phpcs.xml",
+        "fix-style": "phpcbf --standard=phpcs.xml",
+        "phpstan": "phpstan analyse src tests --level=max -c phpstan.neon --no-progress",
         "lint": "php -r \"array_map (function() { passthru('php -l ' . func_get_arg(0)); }, glob('{src/*.php,tests/*.php}', GLOB_BRACE));\"",
-        "phpstan": "php vendor/phpstan/phpstan-shim/phpstan.phar analyse src tests --level=max -c phpstan.neon --no-progress"
+        "install-cs-fixer": "php -r \"@mkdir('build'); copy('https://cs.symfony.com/download/php-cs-fixer-v2.phar', 'build/php-cs-fixer-v2.phar');\"",
+        "fix-style2": "php build/php-cs-fixer-v2.phar fix --config=.cs.php",
+        "check-style2": "php build/php-cs-fixer-v2.phar fix --dry-run --format=txt --verbose --diff --diff-format=udiff --config=.cs.php"
     },
     "autoload": {
         "psr-4": {

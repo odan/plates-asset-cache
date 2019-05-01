@@ -2,7 +2,6 @@
 
 namespace Odan\Asset;
 
-use Exception;
 use RuntimeException;
 
 /**
@@ -10,19 +9,15 @@ use RuntimeException;
  */
 final class AssetCache
 {
-    /**
-     * Cache.
-     *
-     * @var string Path
-     */
+    /** @var string public cache directory */
     private $publicDir;
 
     /**
      * Create new instance.
      *
-     * @param string $publicDir
+     * @param string $publicDir The public cache directory
      *
-     * @throws Exception
+     * @throws RuntimeException
      */
     public function __construct(string $publicDir = null)
     {
@@ -30,17 +25,17 @@ final class AssetCache
             $this->publicDir = $publicDir;
         }
         if (!file_exists($this->publicDir)) {
-            throw new RuntimeException("Path {$this->publicDir} not found");
+            throw new RuntimeException(sprintf('Path %s not found', $this->publicDir));
         }
     }
 
     /**
      * Returns url for filename.
      *
-     * @param string $fileName
-     * @param string $content
+     * @param string $fileName fileName
+     * @param string $content content
      *
-     * @return string
+     * @return string url
      */
     public function createCacheBustedUrl(string $fileName, string $content): string
     {
@@ -54,19 +49,14 @@ final class AssetCache
         $cacheDirs = array_slice($dirs, count($dirs) - 2);
 
         // Folder: cache/ab/filename.ext
-        $path = implode('/', $cacheDirs) . '/' . $name;
-
-        // Create url
-        $cacheUrl = $path;
-
-        return $cacheUrl;
+        return implode('/', $cacheDirs) . '/' . $name;
     }
 
     /**
      * Create cache file from fileName.
      *
-     * @param string $fileName
-     * @param string $content
+     * @param string $fileName fileName
+     * @param string $content content
      *
      * @return string cacheFile
      */

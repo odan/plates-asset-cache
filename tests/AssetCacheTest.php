@@ -16,26 +16,23 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
  */
 class AssetCacheTest extends TestCase
 {
-    /**
-     * @var Engine
-     */
+    /** @var Engine */
     protected $engine;
 
-    /**
-     * @var Template
-     */
+    /** @var Template */
     protected $template;
 
-    /**
-     * @var PlatesAssetExtension
-     */
+    /** @var PlatesAssetExtension */
     protected $extension;
 
-    /**
-     * @var vfsStreamDirectory
-     */
+    /** @var vfsStreamDirectory */
     protected $root;
 
+    /**
+     * Setup.
+     *
+     * @return void
+     */
     public function setUp()
     {
         vfsStream::setup('templates');
@@ -45,7 +42,12 @@ class AssetCacheTest extends TestCase
         $this->template = new Template($this->engine, 'template');
     }
 
-    public function newExtensionInstance()
+    /**
+     * Create instance.
+     *
+     * @return PlatesAssetExtension extension
+     */
+    public function newExtensionInstance(): PlatesAssetExtension
     {
         $this->root = vfsStream::setup('root');
         vfsStream::newDirectory('tmp/asset-cache')->at($this->root);
@@ -58,9 +60,8 @@ class AssetCacheTest extends TestCase
         ];
 
         $engine = new AssetEngine($options);
-        $extension = new PlatesAssetExtension($engine);
 
-        return $extension;
+        return new PlatesAssetExtension($engine);
     }
 
     /**

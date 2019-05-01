@@ -10,22 +10,13 @@ use League\Plates\Extension\ExtensionInterface;
  */
 final class PlatesAssetExtension implements ExtensionInterface
 {
-    /**
-     * Instance of the engine.
-     *
-     * @var Engine
-     */
-    private $engine;
-
-    /**
-     * @var AssetEngine
-     */
+    /** @var AssetEngine */
     private $assetEngine;
 
     /**
      * Constructor.
      *
-     * @param AssetEngine $assetEngine
+     * @param AssetEngine $assetEngine The instance of the asset engine
      */
     public function __construct(AssetEngine $assetEngine)
     {
@@ -37,11 +28,10 @@ final class PlatesAssetExtension implements ExtensionInterface
      *
      * @param Engine $engine Engine instance
      *
-     * @return null
+     * @return void
      */
     public function register(Engine $engine)
     {
-        $this->engine = $engine;
         $engine->registerFunction('assets', [$this, 'assets']);
     }
 
@@ -57,8 +47,8 @@ final class PlatesAssetExtension implements ExtensionInterface
     {
         if (is_string($assets)) {
             return $this->assetEngine->assetFile($assets, $options);
-        } else {
-            return $this->assetEngine->assetFiles($assets, $options);
         }
+
+        return $this->assetEngine->assetFiles($assets, $options);
     }
 }

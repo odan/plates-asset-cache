@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<ruleset name="Coding Standard">
+
+    <description>Coding standards for projects</description>
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg value="sp"/>
+
+    <file>./src</file>
+    <file>./tests</file>
+
+    <rule ref="Doctrine">
+        <!-- Exclude too opinionated rules -->
+        <exclude name="Squiz.Functions.GlobalFunction.Found"/>
+        <exclude name="Squiz.Arrays.ArrayDeclaration.MultiLineNotAllowed"/>
+        <exclude name="Generic.Formatting.SpaceAfterCast.NoSpace"/>
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousTraitNaming.SuperfluousSuffix"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/>
+        <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFallbackGlobalName"/>
+        <exclude name="SlevomatCodingStandard.Commenting.ForbiddenComments.CommentForbidden"/>
+        <exclude name="SlevomatCodingStandard.ControlStructures.UselessTernaryOperator.UselessTernaryOperator"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessReturnAnnotation"/>
+        <exclude name="SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly.ReferencedGeneralException"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHint"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversablePropertyTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment"/>
+        <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName"/>
+
+        <!-- Doesn't work -->
+        <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSame"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed"/>
+
+        <!-- Exclude FIG incompatible rules -->
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix"/>
+
+        <!-- Exclude PSR-5 incompatible rules -->
+        <exclude name="SlevomatCodingStandard.Commenting.DocCommentSpacing.IncorrectOrderOfAnnotationsGroup"/>
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamName"/>
+        <exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
+        <exclude name="Squiz.Commenting.VariableComment.IncorrectVarType"/>
+
+        <!-- Exclude PSR-2 incompatible rules -->
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing.IncorrectWhitespaceBeforeColon"/>
+        <exclude name="Generic.Formatting.SpaceAfterNot.Incorrect"/>
+
+        <!-- Exlude for PHP 7.0 -->
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue.NullabilitySymbolRequired"/>
+    </rule>
+
+    <!-- Extra -->
+    <rule ref="Generic.PHP.LowerCaseConstant"/>
+    <rule ref="Squiz.Classes.LowercaseClassKeywords"/>
+    <rule ref="Squiz.PHP.Eval"/>
+    <rule ref="Squiz.Scope.MemberVarScope"/>
+    <rule ref="Squiz.Scope.StaticThisUsage"/>
+
+    <!-- Comment is required for every method -->
+    <rule name="Squiz.Commenting.FunctionComment.Missing"/>
+    <!-- Require comments for `@param` -->
+    <rule name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
+    <!-- Require `@param` for all parameters -->
+    <rule name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
+    <!-- Require `@return` for void methods -->
+    <rule name="Squiz.Commenting.FunctionComment.MissingReturn"/>
+    <!-- Require all params to be documented -->
+    <rule name="Squiz.Commenting.FunctionComment.ParamNameNoMatch"/>
+    <rule ref="Squiz.Commenting.FunctionCommentThrowTag" />
+    <rule ref="Squiz.Commenting.VariableComment" />
+    <rule name="Squiz.Commenting.FunctionComment.InvalidTypeHint"/>
+
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <properties>
+            <property name="absoluteComplexity" value="50"/>
+        </properties>
+    </rule>
+    <rule ref="Generic.Metrics.NestingLevel">
+        <properties>
+            <property name="nestingLevel" value="2"/>
+            <property name="absoluteNestingLevel" value="4"/>
+        </properties>
+    </rule>
+</ruleset>

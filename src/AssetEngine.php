@@ -13,16 +13,10 @@ use tubalmartin\CssMin\Minifier as CssMinifier;
  */
 final class AssetEngine
 {
-    /**
-     * Cache.
-     *
-     * @var AdapterInterface
-     */
+    /** @var AdapterInterface Cache */
     private $cache;
 
-    /**
-     * @var AssetCache
-     */
+    /** @var AssetCache */
     private $publicCache;
 
     /**
@@ -60,7 +54,6 @@ final class AssetEngine
     /**
      * Render and compress JavaScript assets.
      *
-     * @param string $asset
      * @param array $options
      *
      * @return string content
@@ -93,10 +86,10 @@ final class AssetEngine
         $cssFiles = [];
         foreach ($assets as $file) {
             $fileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-            if ($fileType == 'js') {
+            if ($fileType === 'js') {
                 $jsFiles[] = $file;
             }
-            if ($fileType == 'css') {
+            if ($fileType === 'css') {
                 $cssFiles[] = $file;
             }
         }
@@ -154,16 +147,15 @@ final class AssetEngine
             }
         }
         if (strlen($public) > 0) {
-            $name = isset($options['name']) ? $options['name'] : 'file.js';
+            $name = $options['name'] ?? 'file.js';
             if (empty(pathinfo($name, PATHINFO_EXTENSION))) {
                 $name .= '.js';
             }
             $url = $this->publicCache->createCacheBustedUrl($name, $public);
             $contents[] = sprintf('<script src="%s"></script>', $url);
         }
-        $result = implode("\n", $contents);
 
-        return $result;
+        return implode("\n", $contents);
     }
 
     /**
@@ -185,7 +177,7 @@ final class AssetEngine
         }
 
         if ($minify) {
-            $content = JsMin::minify($content);
+            $content = JSMin::minify($content);
         }
 
         return $content;
@@ -199,7 +191,7 @@ final class AssetEngine
      *
      * @return string content
      */
-    public function css(array $assets, array $options)
+    public function css(array $assets, array $options): string
     {
         $contents = [];
         $public = '';
@@ -220,16 +212,15 @@ final class AssetEngine
         }
 
         if (strlen($public) > 0) {
-            $name = isset($options['name']) ? $options['name'] : 'file.css';
+            $name = $options['name'] ?? 'file.css';
             if (empty(pathinfo($name, PATHINFO_EXTENSION))) {
                 $name .= '.css';
             }
             $url = $this->publicCache->createCacheBustedUrl($name, $public);
             $contents[] = sprintf('<link rel="stylesheet" type="text/css" href="%s" media="all" />', $url);
         }
-        $result = implode("\n", $contents);
 
-        return $result;
+        return implode("\n", $contents);
     }
 
     /**
@@ -266,7 +257,7 @@ final class AssetEngine
      *
      * @return string
      */
-    protected function getCacheKey(array $assets, array $settings = null): string
+    protected function getCacheKey(array $assets, ?array $settings = null): string
     {
         $keys = [];
         foreach ($assets as $file) {
@@ -280,8 +271,6 @@ final class AssetEngine
     /**
      * Check if url is valid.
      *
-     * @param string $url
-     *
      * @return bool
      */
     protected function isExternalUrl(string $url): bool
@@ -291,8 +280,6 @@ final class AssetEngine
 
     /**
      * Returns full path and filename.
-     *
-     * @param string $filename
      *
      * @return string
      */
