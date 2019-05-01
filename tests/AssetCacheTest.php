@@ -87,7 +87,7 @@ class AssetCacheTest extends TestCase
         $actual = $this->extension->assets($filename, ['inline' => true]);
         $this->assertSame('<script>alert(1);</script>', $actual);
 
-        // get from cache
+        // Get from cache
         $actual2 = $this->extension->assets($filename, ['inline' => true]);
         $this->assertSame('<script>alert(1);</script>', $actual2);
 
@@ -111,11 +111,11 @@ class AssetCacheTest extends TestCase
         $actual = $this->extension->assets($filename, ['inline' => false]);
         $this->assertRegExp($regex, $actual);
 
-        // get from cache
+        // Get from cache
         $actual2 = $this->extension->assets($filename, ['inline' => false]);
         $this->assertRegExp($regex, $actual2);
 
-        // update js file, cache must be rebuild
+        // Update js file, cache must be rebuild
         file_put_contents($filename, 'alert(4);');
         $actual3 = $this->extension->assets($filename, ['inline' => false]);
         $this->assertRegExp($regex, $actual3);

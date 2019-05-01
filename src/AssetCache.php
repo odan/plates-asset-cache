@@ -72,7 +72,7 @@ final class AssetCache
         $checksumDir = $this->publicDir . '/' . substr($checksum, 0, 2);
         $cacheFile = $checksumDir . '/' . $name . '.' . substr($checksum, 2) . '.' . $extension;
 
-        // create cache dir
+        // Create cache dir
         if (!file_exists($checksumDir)) {
             mkdir($checksumDir, 0775, true);
         }

@@ -34,7 +34,7 @@ final class AssetEngine
     /**
      * Create new instance.
      *
-     * @param array $options
+     * @param array $options options
      */
     public function __construct(array $options)
     {
