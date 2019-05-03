@@ -13,10 +13,14 @@ use tubalmartin\CssMin\Minifier as CssMinifier;
  */
 final class AssetEngine
 {
-    /** @var AdapterInterface Cache */
+    /**
+     * @var AdapterInterface Cache
+     */
     private $cache;
 
-    /** @var AssetCache */
+    /**
+     * @var AssetCache Asset cache
+     */
     private $publicCache;
 
     /**
@@ -55,6 +59,7 @@ final class AssetEngine
      * Render and compress JavaScript assets.
      *
      * @param array $options
+     * @param string $asset
      *
      * @return string content
      */
@@ -271,6 +276,8 @@ final class AssetEngine
     /**
      * Check if url is valid.
      *
+     * @param string $url
+     *
      * @return bool
      */
     protected function isExternalUrl(string $url): bool
@@ -280,6 +287,8 @@ final class AssetEngine
 
     /**
      * Returns full path and filename.
+     *
+     * @param string $filename
      *
      * @return string
      */
