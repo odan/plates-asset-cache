@@ -37,7 +37,10 @@
         "check-style": "phpcs --standard=phpcs.xml",
         "fix-style": "phpcbf --standard=phpcs.xml",
         "phpstan": "phpstan analyse src tests --level=max -c phpstan.neon --no-progress",
-        "lint": "php -r \"array_map (function() { passthru('php -l ' . func_get_arg(0)); }, glob('{src/*.php,tests/*.php}', GLOB_BRACE));\""
+        "lint": "php -r \"array_map (function() { passthru('php -l ' . func_get_arg(0)); }, glob('{src/*.php,tests/*.php}', GLOB_BRACE));\"",
+        "install-cs": "php -r \"@mkdir('build'); copy('https://cs.symfony.com/download/php-cs-fixer-v2.phar', 'build/php-cs-fixer-v2.phar');\"",
+        "fix-cs": "php build/php-cs-fixer-v2.phar fix --config=.cs.php",
+        "check-cs": "php build/php-cs-fixer-v2.phar fix --dry-run --format=txt --verbose --diff --diff-format=udiff --config=.cs.php"
     },
     "autoload": {
         "psr-4": {
