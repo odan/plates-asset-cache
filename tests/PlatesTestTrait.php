@@ -79,6 +79,7 @@ trait PlatesTestTrait
         $this->engine->addFolder('public', vfsStream::url('root/public'));
 
         $this->extension = $this->newExtensionInstance();
+        $this->engine->loadExtension($this->extension);
     }
 
     /**
