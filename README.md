@@ -24,20 +24,42 @@ composer require odan/plates-asset-cache
 
 ```php
 use League\Plates\Engine;
-use Odan\Asset\AssetEngine;
-use Odan\Asset\PlatesAssetExtension;
+use Odan\PlatesAsset\AssetEngine;
+use Odan\PlatesAsset\PlatesAssetExtension;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 $view = new Engine('/path/with/html/templates', null);
 
-$options = array(
-    // Enable JavaScript and CSS compression
-    'minify' => true,
+$options = [
     // Public assets cache directory
-    'public_dir' => 'public/assets',
-    // Internal cache adapter
-    'cache' => new FilesystemAdapter('assets-cache', 0, 'tmp/cache')
-);
+    'path' => '/var/www/example.com/htdocs/public/assets/cache',
+    
+    // Public cache directory permissions (octal)
+    // You need to prefix mode with a zero (0)
+    // Use -1 to disable chmod
+    'path_chmod' => 0750,
+    
+    // The public url base path
+    'url_base_path' => 'assets/cache/',
+    
+    // Internal cache settings
+    //
+    // The main cache directory
+    // Use '' (empty string) to disable the internal cache
+    'cache_path' => '/var/www/example.com/htdocs/temp',
+    
+    // Used as the subdirectory of the cache_path directory, 
+    // where cache items will be stored
+    'cache_name' => 'assets-cache',
+    
+    // The lifetime (in seconds) for cache items
+    // With a value 0 causing items to be stored indefinitely
+    'cache_lifetime' => 0,
+    
+    // Enable JavaScript and CSS compression
+    // 1 = on, 0 = off
+    'minify' => 1
+];
 
 // Register asset extension
 $view->loadExtension(new PlatesAssetExtension(new AssetEngine($options)));
@@ -72,3 +94,15 @@ Output cached and minified JavaScript content:
 // <script> tag to the cache file
 <?= $this->assets(['mylib.js', 'page.js'], ['inline' => true]); ?>
 ```
+
+#### Parameters
+
+Name | Type | Default | Required | Description
+--- | --- | --- | --- | ---
+inline | bool | false | no | Defines whether the browser downloads the assets inline or via URL.
+minify | bool | true | no | Specifies whether JS/CSS compression is enabled or disabled.
+name | string | file | no | Defines the output file name within the URL.
+
+## License
+
+* MIT

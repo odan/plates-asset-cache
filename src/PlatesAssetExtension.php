@@ -46,9 +46,9 @@ final class PlatesAssetExtension implements ExtensionInterface
     public function assets($assets, array $options = []): string
     {
         if (is_string($assets)) {
-            return $this->assetEngine->assetFile($assets, $options);
+            $assets = (array)$assets;
         }
 
-        return $this->assetEngine->assetFiles($assets, $options);
+        return $this->assetEngine->assets($assets, $options);
     }
 }

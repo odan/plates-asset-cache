@@ -2,10 +2,13 @@
 
 namespace Odan\PlatesAsset;
 
+use InvalidArgumentException;
 use JSMin\JSMin;
+use League\Plates\Engine;
 use RuntimeException;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use tubalmartin\CssMin\Minifier as CssMinifier;
 
 /**
@@ -14,57 +17,93 @@ use tubalmartin\CssMin\Minifier as CssMinifier;
 final class AssetEngine
 {
     /**
-     * @var AdapterInterface Cache
+     * @var Engine
+     */
+    private $engine;
+
+    /**
+     * @var string
+     */
+    private $fileExtension;
+
+    /**
+     * Cache.
+     *
+     * @var AbstractAdapter|ArrayAdapter
      */
     private $cache;
 
     /**
-     * @var AssetCache Asset cache
+     * Cache.
+     *
+     * @var PlatesAssetsCache AssetCache
      */
     private $publicCache;
 
     /**
-     * Enables minify.
+     * Default options.
      *
      * @var array
      */
     private $options = [
+        'cache_adapter' => null,
+        'cache_name' => 'assets-cache',
+        'cache_lifetime' => 0,
+        'cache_path' => null,
+        'path' => null,
+        'path_chmod' => 0750,
         'minify' => true,
-        'inline' => true,
-        'public_dir' => null,
+        'inline' => false,
         'name' => 'file',
+        'url_base_path' => null,
     ];
 
     /**
      * Create new instance.
      *
+     * @param Engine $engine The template engine
      * @param array $options The options
+     * - cache_adapter: The assets cache adapter. false or AbstractAdapter
+     * - cache_name: Default is 'assets-cache'
+     * - cache_lifetime: Default is 0
+     * - cache_path: The temporary cache path
+     * - path: The public assets cache directory (e.g. public/cache)
+     * - url_base_path: The path of the minified css/js.
+     * - minify: Enable JavaScript and CSS compression. The default value is true
+     * - inline: Default is false
+     * - name: The default asset name. The default value is 'file'
      */
-    public function __construct(array $options)
+    public function __construct(Engine $engine, array $options)
     {
-        if (!empty($options['cache']) && $options['cache'] instanceof AdapterInterface) {
-            $this->cache = $options['cache'];
+        $this->engine = $engine;
+        $this->fileExtension = $this->engine->getFileExtension();
+
+        $options = array_replace_recursive($this->options, $options);
+
+        if (empty($options['path'])) {
+            throw new InvalidArgumentException('The option [path] is not defined');
+        }
+
+        $chmod = -1;
+        if (isset($options['path_chmod']) && $options['path_chmod'] > -1) {
+            $chmod = (int)$options['path_chmod'];
+        }
+
+        $this->publicCache = new PlatesAssetsCache($options['path'], $chmod);
+
+        if (!empty($options['cache_path'])) {
+            $this->cache = new FilesystemAdapter(
+                $options['cache_name'],
+                $options['cache_lifetime'],
+                $options['cache_path']
+            );
         } else {
             $this->cache = new ArrayAdapter();
         }
-        $this->publicCache = new AssetCache($options['public_dir']);
 
-        unset($options['public_cache'], $options['cache']);
+        unset($options['cache_adapter']);
 
-        $this->options = (array)array_replace_recursive($this->options, $options);
-    }
-
-    /**
-     * Render and compress JavaScript assets.
-     *
-     * @param string $asset The asset
-     * @param array $options The options
-     *
-     * @return string The content
-     */
-    public function assetFile(string $asset, array $options = []): string
-    {
-        return $this->assetFiles((array)$asset, $options);
+        $this->options = $options;
     }
 
     /**
@@ -75,7 +114,7 @@ final class AssetEngine
      *
      * @return string The content
      */
-    public function assetFiles(array $assets, array $options = []): string
+    public function assets(array $assets, array $options = []): string
     {
         $assets = $this->prepareAssets($assets);
         $options = (array)array_replace_recursive($this->options, $options);
@@ -90,10 +129,10 @@ final class AssetEngine
         $cssFiles = [];
         foreach ($assets as $file) {
             $fileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-            if ($fileType === 'js') {
+            if ($fileType == 'js') {
                 $jsFiles[] = $file;
             }
-            if ($fileType === 'css') {
+            if ($fileType == 'css') {
                 $cssFiles[] = $file;
             }
         }
@@ -127,15 +166,16 @@ final class AssetEngine
     /**
      * Render and compress CSS assets.
      *
-     * @param array $assets The assets
-     * @param array $options The options
+     * @param array $assets Assets
+     * @param array $options Options
      *
-     * @return string The content
+     * @return string content
      */
     public function js(array $assets, array $options): string
     {
         $contents = [];
         $public = '';
+
         foreach ($assets as $asset) {
             if ($this->isExternalUrl($asset)) {
                 // External url
@@ -147,15 +187,19 @@ final class AssetEngine
             if (!empty($options['inline'])) {
                 $contents[] = sprintf('<script>%s</script>', $content);
             } else {
-                $public .= $content . '';
+                $public .= sprintf("/* %s */\n", basename($asset)) . $content . "\n";
             }
         }
         if ($public !== '') {
             $name = $options['name'] ?? 'file.js';
+
             if (empty(pathinfo($name, PATHINFO_EXTENSION))) {
                 $name .= '.js';
             }
-            $url = $this->publicCache->createCacheBustedUrl($name, $public);
+
+            $urlBasePath = $options['url_base_path'] ?? '';
+            $url = $this->publicCache->createCacheBustedUrl($name, $public, $urlBasePath);
+
             $contents[] = sprintf('<script src="%s"></script>', $url);
         }
 
@@ -163,21 +207,21 @@ final class AssetEngine
     }
 
     /**
-     * Minimize JavaScript content.
+     * Minimise JS.
      *
-     * @param string $filename Name of default JS file
+     * @param string $file Name of default JS file
      * @param bool $minify Minify js if true
      *
      * @throws RuntimeException
      *
      * @return string JavaScript code
      */
-    protected function getJsContent(string $filename, bool $minify): string
+    private function getJsContent(string $file, bool $minify): string
     {
-        $content = file_get_contents($filename);
+        $content = file_get_contents($file);
 
         if ($content === false) {
-            throw new RuntimeException(sprintf('File could be read: %s', $filename));
+            throw new RuntimeException(sprintf('File could could not be read %s', $file));
         }
 
         if ($minify) {
@@ -214,13 +258,16 @@ final class AssetEngine
                 $public .= $content . '';
             }
         }
-
         if ($public !== '') {
             $name = $options['name'] ?? 'file.css';
+
             if (empty(pathinfo($name, PATHINFO_EXTENSION))) {
                 $name .= '.css';
             }
-            $url = $this->publicCache->createCacheBustedUrl($name, $public);
+
+            $urlBasePath = $options['url_base_path'] ?? '';
+            $url = $this->publicCache->createCacheBustedUrl($name, $public, $urlBasePath);
+
             $contents[] = sprintf('<link rel="stylesheet" type="text/css" href="%s" media="all" />', $url);
         }
 
@@ -242,10 +289,10 @@ final class AssetEngine
         $content = file_get_contents($fileName);
 
         if ($content === false) {
-            throw new RuntimeException(sprintf('File could be read: %s', $fileName));
+            throw new RuntimeException(sprintf('File could could not be read %s', $fileName));
         }
 
-        if ($minify === true) {
+        if ($minify) {
             $compressor = new CssMinifier();
             $content = $compressor->run($content);
         }
@@ -279,7 +326,7 @@ final class AssetEngine
      *
      * @return bool The status
      */
-    protected function isExternalUrl(string $url): bool
+    private function isExternalUrl($url): bool
     {
         return (!filter_var($url, FILTER_VALIDATE_URL) === false) && (strpos($url, 'vfs://') === false);
     }
@@ -293,6 +340,20 @@ final class AssetEngine
      */
     protected function getRealFilename(string $filename): string
     {
-        return $filename;
+        // Skip test stream but resolve Plates folders
+        if (strpos($filename, 'vfs://') !== false ||
+            strpos($filename, '::') === false) {
+            return $filename;
+        }
+
+        // Resolve Plates folders alias
+        $fullPath = $this->engine->path($filename);
+
+        // Remove plates (php) file extension
+        if ($this->fileExtension !== '') {
+            $fullPath = dirname($fullPath) . '/' . basename($fullPath, '.' . $this->fileExtension);
+        }
+
+        return $fullPath;
     }
 }
