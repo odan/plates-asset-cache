@@ -62,7 +62,7 @@ $options = [
 ];
 
 // Register asset extension
-$view->loadExtension(new PlatesAssetExtension(new AssetEngine($engine, $options)));
+$engine->loadExtension(new PlatesAssetExtension(new AssetEngine($engine, $options)));
 ```
 ## Usage
 
