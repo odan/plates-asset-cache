@@ -38,7 +38,7 @@ final class AssetEngine
     /**
      * Create new instance.
      *
-     * @param array $options options
+     * @param array $options The options
      */
     public function __construct(array $options)
     {
@@ -49,19 +49,18 @@ final class AssetEngine
         }
         $this->publicCache = new AssetCache($options['public_dir']);
 
-        unset($options['public_cache']);
-        unset($options['cache']);
+        unset($options['public_cache'], $options['cache']);
 
-        $this->options = array_replace_recursive($this->options, $options);
+        $this->options = (array)array_replace_recursive($this->options, $options);
     }
 
     /**
      * Render and compress JavaScript assets.
      *
-     * @param array $options
-     * @param string $asset
+     * @param string $asset The asset
+     * @param array $options The options
      *
-     * @return string content
+     * @return string The content
      */
     public function assetFile(string $asset, array $options = []): string
     {
@@ -71,15 +70,15 @@ final class AssetEngine
     /**
      * Render and compress JavaScript assets.
      *
-     * @param array $assets
-     * @param array $options
+     * @param array $assets The assets
+     * @param array $options The options
      *
-     * @return string content
+     * @return string The content
      */
     public function assetFiles(array $assets, array $options = []): string
     {
         $assets = $this->prepareAssets($assets);
-        $options = array_replace_recursive($this->options, $options);
+        $options = (array)array_replace_recursive($this->options, $options);
 
         $cacheKey = $this->getCacheKey($assets, $options);
         $cacheItem = $this->cache->getItem($cacheKey);
@@ -111,9 +110,9 @@ final class AssetEngine
     /**
      * Resolve real asset filenames.
      *
-     * @param array $assets
+     * @param array $assets The assets
      *
-     * @return array
+     * @return array The real filenames
      */
     protected function prepareAssets(array $assets): array
     {
@@ -128,10 +127,10 @@ final class AssetEngine
     /**
      * Render and compress CSS assets.
      *
-     * @param array $assets
-     * @param array $options
+     * @param array $assets The assets
+     * @param array $options The options
      *
-     * @return string content
+     * @return string The content
      */
     public function js(array $assets, array $options): string
     {
@@ -151,7 +150,7 @@ final class AssetEngine
                 $public .= $content . '';
             }
         }
-        if (strlen($public) > 0) {
+        if ($public !== '') {
             $name = $options['name'] ?? 'file.js';
             if (empty(pathinfo($name, PATHINFO_EXTENSION))) {
                 $name .= '.js';
@@ -164,21 +163,21 @@ final class AssetEngine
     }
 
     /**
-     * Minimise JS.
+     * Minimize JavaScript content.
      *
-     * @param string $file Name of default JS file
+     * @param string $filename Name of default JS file
      * @param bool $minify Minify js if true
      *
      * @throws RuntimeException
      *
      * @return string JavaScript code
      */
-    protected function getJsContent(string $file, bool $minify): string
+    protected function getJsContent(string $filename, bool $minify): string
     {
-        $content = file_get_contents($file);
+        $content = file_get_contents($filename);
 
         if ($content === false) {
-            throw new RuntimeException(sprintf('File could be read: %s', $file));
+            throw new RuntimeException(sprintf('File could be read: %s', $filename));
         }
 
         if ($minify) {
@@ -191,10 +190,10 @@ final class AssetEngine
     /**
      * Render and compress CSS assets.
      *
-     * @param array $assets
-     * @param array $options
+     * @param array $assets The assets
+     * @param array $options The options
      *
-     * @return string content
+     * @return string The content
      */
     public function css(array $assets, array $options): string
     {
@@ -216,7 +215,7 @@ final class AssetEngine
             }
         }
 
-        if (strlen($public) > 0) {
+        if ($public !== '') {
             $name = $options['name'] ?? 'file.css';
             if (empty(pathinfo($name, PATHINFO_EXTENSION))) {
                 $name .= '.css';
@@ -257,10 +256,10 @@ final class AssetEngine
     /**
      * Get cache key.
      *
-     * @param array $assets
-     * @param array $settings
+     * @param array $assets The assets
+     * @param array $settings The settings
      *
-     * @return string
+     * @return string The cache key
      */
     protected function getCacheKey(array $assets, array $settings = null): string
     {
@@ -276,9 +275,9 @@ final class AssetEngine
     /**
      * Check if url is valid.
      *
-     * @param string $url
+     * @param string $url The url
      *
-     * @return bool
+     * @return bool The status
      */
     protected function isExternalUrl(string $url): bool
     {
@@ -288,9 +287,9 @@ final class AssetEngine
     /**
      * Returns full path and filename.
      *
-     * @param string $filename
+     * @param string $filename The filename
      *
-     * @return string
+     * @return string The real filename
      */
     protected function getRealFilename(string $filename): string
     {

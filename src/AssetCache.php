@@ -32,10 +32,10 @@ final class AssetCache
     /**
      * Returns url for filename.
      *
-     * @param string $fileName fileName
-     * @param string $content content
+     * @param string $fileName The fileName
+     * @param string $content The content
      *
-     * @return string url
+     * @return string The url
      */
     public function createCacheBustedUrl(string $fileName, string $content): string
     {
@@ -55,10 +55,10 @@ final class AssetCache
     /**
      * Create cache file from fileName.
      *
-     * @param string $fileName fileName
-     * @param string $content content
+     * @param string $fileName The fileName
+     * @param string $content The content
      *
-     * @return string cacheFile
+     * @return string The cacheFile
      */
     protected function createPublicCacheFile(string $fileName, string $content): string
     {
