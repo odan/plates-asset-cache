@@ -28,7 +28,7 @@ use Odan\PlatesAsset\AssetEngine;
 use Odan\PlatesAsset\PlatesAssetExtension;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
-$view = new Engine('/path/with/html/templates', null);
+$engine = new Engine('/path/with/html/templates');
 
 $options = [
     // Public assets cache directory
@@ -62,7 +62,7 @@ $options = [
 ];
 
 // Register asset extension
-$view->loadExtension(new PlatesAssetExtension(new AssetEngine($options)));
+$view->loadExtension(new PlatesAssetExtension(new AssetEngine($engine, $options)));
 ```
 ## Usage
 
