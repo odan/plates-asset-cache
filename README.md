@@ -97,6 +97,14 @@ Output cached and minified JavaScript content:
 
 #### Parameters
 
+1. Parameter: $assets
+
+Name | Type | Default | Required | Description
+--- | --- | --- | --- | ---
+files | array | [] | yes | All assets (files) to be delivered to the browser. [Plates Folders](https://platesphp.com/v3/engine/folders/) (`myalias::myfile.js`) are also supported.
+
+2. Parameter: $options
+
 Name | Type | Default | Required | Description
 --- | --- | --- | --- | ---
 inline | bool | false | no | Defines whether the browser downloads the assets inline or via URL.
