@@ -22,7 +22,7 @@ final class AssetEngine
     private $engine;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $fileExtension;
 
@@ -350,7 +350,7 @@ final class AssetEngine
         $fullPath = $this->engine->path($filename);
 
         // Remove plates (php) file extension
-        if ($this->fileExtension !== '') {
+        if (!empty($this->fileExtension)) {
             $fullPath = dirname($fullPath) . '/' . basename($fullPath, '.' . $this->fileExtension);
         }
 
