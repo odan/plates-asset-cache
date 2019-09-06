@@ -1,11 +1,11 @@
 <?php
 
-namespace Odan\Test;
+namespace Odan\PlatesAsset\Test;
 
 use League\Plates\Engine;
 use League\Plates\Template\Template;
-use Odan\Asset\AssetEngine;
-use Odan\Asset\PlatesAssetExtension;
+use Odan\PlatesAsset\AssetEngine;
+use Odan\PlatesAsset\PlatesAssetExtension;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;

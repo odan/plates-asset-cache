@@ -1,6 +1,6 @@
 <?php
 
-namespace Odan\Asset;
+namespace Odan\PlatesAsset;
 
 use JSMin\JSMin;
 use RuntimeException;

@@ -51,12 +51,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Odan\\Asset\\": "src/"
+            "Odan\\PlatesAsset\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Odan\\Test\\": "tests/"
+            "Odan\\PlatesAsset\\Test\\": "tests"
         }
     },
     "config": {
