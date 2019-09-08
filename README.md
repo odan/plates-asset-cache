@@ -66,9 +66,9 @@ $engine->loadExtension(new PlatesAssetExtension(new AssetEngine($engine, $option
 ```
 ## Usage
 
-### Template
+### The page template
 
-Output cached and minified JavaScript and CSS content:
+Template file: `index.php`
 
 ```php
 <?php /** @var League\Plates\Template\Template $this */ ?>
@@ -76,7 +76,7 @@ Output cached and minified JavaScript and CSS content:
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <base href="<?= $baseurl; ?>" />
+        <base href="<?= $baseUrl; ?>" />
         <title>Demo</title>
         <?= $this->assets(['default.css', 'print.css'], ['inline' => true]); ?>
     </head>
@@ -84,8 +84,35 @@ Output cached and minified JavaScript and CSS content:
     <!-- content -->
     
     <!-- JavaScript assets -->
-    <?= $this->assets(['mylib.js', 'page.js'], ['inline' => true]); ?>
+    <?= $this->assets(['mylib.js', 'page.js']); ?>
     </body>
+</html>
+```
+
+### Render a template
+
+```php
+$engine = new League\Plates\Engine('/path/to/templates');
+
+echo $engine->render('index', ['baseUrl' => '']);
+```
+
+### The result
+
+```php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <base href="" />
+    <title>Demo</title>
+    <style></style>
+<style>@media print{.noprint{display:none}.navbar{visibility:hidden;display:none}.container{width:99%}.table{table-layout:fixed;width:99%;max-width:99%}}</style></head>
+<body>
+<!-- content -->
+
+<!-- JavaScript assets -->
+<script src="assets/file.3dd5380c0b893eea8a14e30ce5bfa4cb9aab011b.js"></script></body>
 </html>
 ```
 
@@ -104,6 +131,52 @@ Name | Type | Default | Required | Description
 inline | bool | false | no | Defines whether the browser downloads the assets inline or via URL.
 minify | bool | true | no | Specifies whether JS/CSS compression is enabled or disabled.
 name | string | file | no | Defines the output file name within the URL.
+
+
+## Slim 4 integration
+
+Add the container definition:
+
+```php
+use League\Container\Container;
+use League\Container\ReflectionContainer;
+use League\Plates\Engine;
+use Odan\PlatesAsset\PlatesAssetExtension;
+use Slim\App;
+
+$container = new Container();
+
+$container->delegate(new ReflectionContainer());
+
+// ...
+
+$container->share(Engine::class, static function (Container $container) {
+    $settings = $container->get('settings');
+    $viewPath = $settings['plates']['path'];
+
+    $engine = new Engine($viewPath);
+
+    // The public url base path
+    $baseUrl = $container->get(App::class)->getBasePath();
+    $engine->addData(['baseUrl' => $baseUrl]);
+    
+    $options['url_base_path'] = $basePath;
+
+    $engine->loadExtension(new PlatesAssetExtension(new AssetEngine($engine, $options)));
+
+    return $engine;
+})->addArgument($container);
+```
+
+Render the template and write content to the response stream:
+
+```php
+$response->withHeader('Content-Type', 'text/html; charset=utf-8');
+
+$response->getBody()->write($this->engine->render($name, $viewData));
+
+return $response;
+```
 
 ## License
 
