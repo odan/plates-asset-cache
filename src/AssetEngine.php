@@ -340,9 +340,8 @@ final class AssetEngine
      */
     protected function getRealFilename(string $filename): string
     {
-        // Skip test stream but resolve Plates folders
-        if (strpos($filename, 'vfs://') !== false ||
-            strpos($filename, '::') === false) {
+        // Skip test stream
+        if (strpos($filename, 'vfs://') !== false) {
             return $filename;
         }
 
