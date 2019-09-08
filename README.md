@@ -137,7 +137,19 @@ name | string | file | no | Defines the output file name within the URL.
 
 Add the container definition:
 
-```
+```php
+use League\Container\Container;
+use League\Container\ReflectionContainer;
+use League\Plates\Engine;
+use Odan\PlatesAsset\PlatesAssetExtension;
+use Slim\App;
+
+$container = new Container();
+
+$container->delegate(new ReflectionContainer());
+
+// ...
+
 $container->share(Engine::class, static function (Container $container) {
     $settings = $container->get('settings');
     $viewPath = $settings['plates']['path'];
@@ -161,7 +173,7 @@ Render the template and write content to the response stream:
 ```php
 $response->withHeader('Content-Type', 'text/html; charset=utf-8');
 
-$response->getBody()->write($this->engine->render('index'));
+$response->getBody()->write($this->engine->render($name, $viewData));
 
 return $response;
 ```
