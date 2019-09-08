@@ -112,7 +112,7 @@ echo $engine->render('index', ['baseUrl' => '']);
 <!-- content -->
 
 <!-- JavaScript assets -->
-<script src="file.3dd5380c0b893eea8a14e30ce5bfa4cb9aab011b.js"></script></body>
+<script src="assets/file.3dd5380c0b893eea8a14e30ce5bfa4cb9aab011b.js"></script></body>
 </html>
 ```
 
