@@ -135,37 +135,40 @@ name | string | file | no | Defines the output file name within the URL.
 
 ## Slim 4 integration
 
+For this example we use the [PHP-DI](http://php-di.org/) package.
+
 Add the container definition:
 
 ```php
-use League\Container\Container;
-use League\Container\ReflectionContainer;
+<?php
+
 use League\Plates\Engine;
 use Odan\PlatesAsset\PlatesAssetExtension;
+use Psr\Container\ContainerInterface;
 use Slim\App;
-
-$container = new Container();
-
-$container->delegate(new ReflectionContainer());
 
 // ...
 
-$container->share(Engine::class, static function (Container $container) {
-    $settings = $container->get('settings');
-    $viewPath = $settings['plates']['path'];
+return [
+    // ...
 
-    $engine = new Engine($viewPath);
+    Engine::class => function (ContainerInterface $container) {
+        $settings = $container->get('settings');
+        $viewPath = $settings['plates']['path'];
 
-    // The public url base path
-    $baseUrl = $container->get(App::class)->getBasePath();
-    $engine->addData(['baseUrl' => $baseUrl]);
+        $engine = new Engine($viewPath);
+
+        // The public url base path
+        $baseUrl = $container->get(App::class)->getBasePath();
+        $engine->addData(['baseUrl' => $baseUrl]);
     
-    $options['url_base_path'] = $basePath;
+        $options['url_base_path'] = $basePath;
 
-    $engine->loadExtension(new PlatesAssetExtension(new AssetEngine($engine, $options)));
+        $engine->loadExtension(new PlatesAssetExtension(new AssetEngine($engine, $options)));
 
-    return $engine;
-})->addArgument($container);
+        return $engine;
+    },
+];
 ```
 
 Render the template and write content to the response stream:
