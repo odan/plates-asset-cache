@@ -41,7 +41,7 @@ trait PlatesTestTrait
     protected $styleInlineFileRegex = '/^\<link rel=\"stylesheet\" type=\"text\/css\" href=\"file\.[a-zA-Z0-9]{36}/';
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $options = [];
 

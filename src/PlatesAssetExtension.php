@@ -38,8 +38,8 @@ final class PlatesAssetExtension implements ExtensionInterface
     /**
      * Render and compress assets content.
      *
-     * @param string|array $assets The assets
-     * @param array $options The options
+     * @param string|array<string> $assets The assets
+     * @param array<mixed> $options The options
      *
      * @return string The minified content
      */

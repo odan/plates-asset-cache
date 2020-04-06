@@ -15,6 +15,9 @@ class PlatesAssetsCacheTest extends TestCase
 {
     use PlatesTestTrait;
 
+    /**
+     * @var string
+     */
     protected $cacheBustedRegex = '/^cache\/cache\.[a-zA-Z0-9]{36}/';
 
     /**

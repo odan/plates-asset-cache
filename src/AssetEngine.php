@@ -43,7 +43,7 @@ final class AssetEngine
     /**
      * Default options.
      *
-     * @var array
+     * @var array<mixed>
      */
     private $options = [
         'cache_adapter' => null,
@@ -62,7 +62,7 @@ final class AssetEngine
      * Create new instance.
      *
      * @param Engine $engine The template engine
-     * @param array $options The options
+     * @param array<mixed> $options The options
      * - cache_adapter: The assets cache adapter. false or AbstractAdapter
      * - cache_name: Default is 'assets-cache'
      * - cache_lifetime: Default is 0
@@ -109,8 +109,8 @@ final class AssetEngine
     /**
      * Render and compress JavaScript assets.
      *
-     * @param array $assets The assets
-     * @param array $options The options
+     * @param array<mixed> $assets The assets
+     * @param array<mixed> $options The options
      *
      * @return string The content
      */
@@ -149,9 +149,9 @@ final class AssetEngine
     /**
      * Resolve real asset filenames.
      *
-     * @param array $assets The assets
+     * @param array<string> $assets The assets
      *
-     * @return array The real filenames
+     * @return array<string> The real filenames
      */
     protected function prepareAssets(array $assets): array
     {
@@ -166,8 +166,8 @@ final class AssetEngine
     /**
      * Render and compress CSS assets.
      *
-     * @param array $assets Assets
-     * @param array $options Options
+     * @param array<string> $assets Assets
+     * @param array<mixed> $options Options
      *
      * @return string content
      */
@@ -234,8 +234,8 @@ final class AssetEngine
     /**
      * Render and compress CSS assets.
      *
-     * @param array $assets The assets
-     * @param array $options The options
+     * @param array<string> $assets The assets
+     * @param array<mixed> $options The options
      *
      * @return string The content
      */
@@ -303,8 +303,8 @@ final class AssetEngine
     /**
      * Get cache key.
      *
-     * @param array $assets The assets
-     * @param array $settings The settings
+     * @param array<string> $assets The assets
+     * @param array<mixed> $settings The settings
      *
      * @return string The cache key
      */
