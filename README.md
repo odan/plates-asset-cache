@@ -2,7 +2,7 @@
 
 Caching and compression for Plates template assets (JavaScript and CSS).
 
-[![Latest Version](https://img.shields.io/github/release/odan/plates-asset-cache.svg)](https://github.com/loadsys/odan/plates-asset-cache/releases)
+[![Latest Version](https://img.shields.io/github/release/odan/plates-asset-cache.svg)](https://github.com/odan/plates-asset-cache/releases)
 [![Build Status](https://github.com/odan/plates-asset-cache/workflows/PHP/badge.svg)](https://github.com/odan/plates-asset-cache/actions)
 [![Crutinizer](https://img.shields.io/scrutinizer/g/odan/plates-asset-cache.svg)](https://scrutinizer-ci.com/g/odan/plates-asset-cache)
 [![Code Coverage](https://scrutinizer-ci.com/g/odan/plates-asset-cache/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/odan/plates-asset-cache/code-structure)
