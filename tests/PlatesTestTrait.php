@@ -50,7 +50,7 @@ trait PlatesTestTrait
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         vfsStream::setup('templates');
         $this->engine = new Engine(vfsStream::url('templates'));

@@ -2,12 +2,12 @@
 
 Caching and compression for Plates template assets (JavaScript and CSS).
 
-[![Latest Version](https://img.shields.io/github/release/odan/plates-asset-cache.svg)](https://github.com/odan/plates-asset-cache/releases)
-[![Build Status](https://github.com/odan/plates-asset-cache/workflows/PHP/badge.svg)](https://github.com/odan/plates-asset-cache/actions)
-[![Crutinizer](https://img.shields.io/scrutinizer/g/odan/plates-asset-cache.svg)](https://scrutinizer-ci.com/g/odan/plates-asset-cache)
-[![Code Coverage](https://scrutinizer-ci.com/g/odan/plates-asset-cache/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/odan/plates-asset-cache/code-structure)
-[![Total Downloads](https://img.shields.io/packagist/dt/odan/plates-asset-cache.svg)](https://packagist.org/packages/odan/plates-asset-cache/stats)
+[![Latest Version on Packagist](https://img.shields.io/github/release/odan/plates-asset-cache.svg)](https://github.com/odan/plates-asset-cache/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
+[![Build Status](https://github.com/odan/plates-asset-cache/workflows/build/badge.svg)](https://github.com/odan/plates-asset-cache/actions)
+[![Code Coverage](https://scrutinizer-ci.com/g/odan/plates-asset-cache/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/odan/plates-asset-cache/code-structure)
+[![Quality Score](https://scrutinizer-ci.com/g/odan/plates-asset-cache/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/odan/plates-asset-cache/?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/odan/plates-asset-cache.svg)](https://packagist.org/packages/odan/plates-asset-cache/stats)
 
 
 ## Installation
@@ -18,7 +18,7 @@ composer require odan/plates-asset-cache
 
 ## Requirements
 
-* PHP 7.0+
+* PHP 7.3+ or 8.0+
 
 ## Configuration
 
@@ -183,4 +183,4 @@ return $response;
 
 ## License
 
-* MIT
+The MIT License (MIT). Please see [License File](LICENSE) for more information.

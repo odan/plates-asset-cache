@@ -5,6 +5,7 @@ namespace Odan\PlatesAsset\Test;
 use Odan\PlatesAsset\PlatesAssetsCache;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
  * Test.
@@ -32,10 +33,10 @@ class PlatesAssetsCacheTest extends TestCase
      * Test create object.
      *
      * @return void
-     * @expectedException \Exception
      */
-    public function testInstanceError()
+    public function testInstanceError(): void
     {
+        $this->expectException(RuntimeException::class);
         $cache = new PlatesAssetsCache(vfsStream::url('root/nada'));
         $this->assertInstanceOf(PlatesAssetsCache::class, $cache);
     }
@@ -45,11 +46,11 @@ class PlatesAssetsCacheTest extends TestCase
      *
      * @return void
      */
-    public function testCreateCacheBustedUrl()
+    public function testCreateCacheBustedUrl(): void
     {
         $cache = $this->newInstance();
         $actual = $cache->createCacheBustedUrl(vfsStream::url('root/public/cache'), 'content', 'cache/');
-        $this->assertRegExp($this->cacheBustedRegex, $actual);
+        $this->assertMatchesRegularExpression($this->cacheBustedRegex, $actual);
     }
 
     /**
@@ -57,7 +58,7 @@ class PlatesAssetsCacheTest extends TestCase
      *
      * @return void
      */
-    public function testCreateCacheBustedNormalUrl()
+    public function testCreateCacheBustedNormalUrl(): void
     {
         $cache = $this->newInstance();
         $actual = $cache->createCacheBustedUrl(vfsStream::url('root/public/cache/aa/file.js'), 'content', 'cache/');
@@ -69,7 +70,7 @@ class PlatesAssetsCacheTest extends TestCase
      *
      * @return void
      */
-    public function testCreateCacheBustedAdBlockedUrl()
+    public function testCreateCacheBustedAdBlockedUrl(): void
     {
         $cache = $this->newInstance();
         $actual = $cache->createCacheBustedUrl(vfsStream::url('root/public/cache/ad/file.js'), 'content', 'cache/');

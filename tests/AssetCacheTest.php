@@ -17,7 +17,7 @@ class AssetCacheTest extends TestCase
      *
      * @return void
      */
-    public function testJsInline()
+    public function testJsInline(): void
     {
         $file = vfsStream::newFile('test.js')->at($this->root)->setContent('alert(1);');
         $filename = $file->url();
@@ -52,21 +52,21 @@ class AssetCacheTest extends TestCase
      *
      * @return void
      */
-    public function testJsDefault()
+    public function testJsDefault(): void
     {
         $file = vfsStream::newFile('test.js')->at($this->root)->setContent('alert(2);');
         $filename = $file->url();
         $actual = $this->extension->assets([$filename], ['inline' => false]);
-        $this->assertRegExp($this->scriptInlineFileRegex, $actual);
+        $this->assertMatchesRegularExpression($this->scriptInlineFileRegex, $actual);
 
         // get from cache
         $actual2 = $this->extension->assets([$filename], ['inline' => false]);
-        $this->assertRegExp($this->scriptInlineFileRegex, $actual2);
+        $this->assertMatchesRegularExpression($this->scriptInlineFileRegex, $actual2);
 
         // update js file, cache must be rebuild
         file_put_contents($filename, 'alert(4);');
         $actual3 = $this->extension->assets([$filename], ['inline' => false]);
-        $this->assertRegExp($this->scriptInlineFileRegex, $actual3);
+        $this->assertMatchesRegularExpression($this->scriptInlineFileRegex, $actual3);
     }
 
     /**
@@ -74,23 +74,23 @@ class AssetCacheTest extends TestCase
      *
      * @return void
      */
-    public function testJsPublic()
+    public function testJsPublic(): void
     {
         // <script src="/cache/ab/file.96ce14164e1f92eb0ec93044a005be906f56d4.js"></script>
 
         $file = vfsStream::newFile('public.js')->at($this->root)->setContent('alert(3);');
         $filename = $file->url();
         $actual = $this->extension->assets($filename, ['inline' => false]);
-        $this->assertRegExp($this->scriptInlineFileRegex, $actual);
+        $this->assertMatchesRegularExpression($this->scriptInlineFileRegex, $actual);
 
         // Get from cache
         $actual2 = $this->extension->assets($filename, ['inline' => false]);
-        $this->assertRegExp($this->scriptInlineFileRegex, $actual2);
+        $this->assertMatchesRegularExpression($this->scriptInlineFileRegex, $actual2);
 
         // Update js file, cache must be rebuild
         file_put_contents($filename, 'alert(4);');
         $actual3 = $this->extension->assets($filename, ['inline' => false]);
-        $this->assertRegExp($this->scriptInlineFileRegex, $actual3);
+        $this->assertMatchesRegularExpression($this->scriptInlineFileRegex, $actual3);
     }
 
     /**
@@ -98,7 +98,7 @@ class AssetCacheTest extends TestCase
      *
      * @return void
      */
-    public function testJsPublicWithAlias()
+    public function testJsPublicWithAlias(): void
     {
         // Array of files and folder alias
         $file = vfsStream::newFile('public/test.js')->at($this->root)->setContent('alert(3);');
@@ -107,16 +107,16 @@ class AssetCacheTest extends TestCase
 
         // Generate
         $actual = $this->extension->assets([$filename], ['inline' => false]);
-        $this->assertRegExp($this->scriptInlineFileRegex, $actual);
+        $this->assertMatchesRegularExpression($this->scriptInlineFileRegex, $actual);
 
         // Get from cache
         $actual2 = $this->extension->assets([$filename], ['inline' => false]);
-        $this->assertRegExp($this->scriptInlineFileRegex, $actual2);
+        $this->assertMatchesRegularExpression($this->scriptInlineFileRegex, $actual2);
 
         // Update js file, cache must be rebuild
         file_put_contents($realFileUrl, 'alert(4);');
         $actual3 = $this->extension->assets([$filename], ['inline' => false]);
-        $this->assertRegExp($this->scriptInlineFileRegex, $actual3);
+        $this->assertMatchesRegularExpression($this->scriptInlineFileRegex, $actual3);
         $this->assertNotSame($actual2, $actual3);
     }
 
@@ -125,7 +125,7 @@ class AssetCacheTest extends TestCase
      *
      * @return void
      */
-    public function testCssDefault()
+    public function testCssDefault(): void
     {
         $content = 'body {
             /* background-color: #F4F4F4; */
@@ -138,15 +138,15 @@ class AssetCacheTest extends TestCase
         $file = vfsStream::newFile('test.css')->at($this->root)->setContent($content);
         $filename = $file->url();
         $actual = $this->extension->assets([$filename], ['inline' => false]);
-        $this->assertRegExp($this->styleInlineFileRegex, $actual);
+        $this->assertMatchesRegularExpression($this->styleInlineFileRegex, $actual);
 
         // get from cache
         $actual2 = $this->extension->assets([$filename], ['inline' => false]);
-        $this->assertRegExp($this->styleInlineFileRegex, $actual2);
+        $this->assertMatchesRegularExpression($this->styleInlineFileRegex, $actual2);
 
         // update js file, cache must be rebuild
         file_put_contents($filename, 'alert(4);');
         $actual3 = $this->extension->assets([$filename], ['inline' => false]);
-        $this->assertRegExp($this->styleInlineFileRegex, $actual3);
+        $this->assertMatchesRegularExpression($this->styleInlineFileRegex, $actual3);
     }
 }

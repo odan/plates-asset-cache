@@ -1,5 +1,11 @@
-.idea/
 composer.lock
+.DS_STORE
+cache.properties
+.php_cs.cache
+.vscode
+.phpunit.result.cache
+
+.idea/
 nbproject/
-vendor/
 build/
+vendor/
