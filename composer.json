@@ -26,7 +26,7 @@
     },
     "require-dev": {
         "league/plates": "3.*",
-        "friendsofphp/php-cs-fixer": "^2",
+        "friendsofphp/php-cs-fixer": "^2 || ^3",
         "overtrue/phplint": "^2",
         "phpstan/phpstan": "0.*",
         "phpunit/phpunit": "^9",
